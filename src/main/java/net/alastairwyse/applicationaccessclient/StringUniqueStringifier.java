@@ -3,7 +3,7 @@ package net.alastairwyse.applicationaccessclient;
 import net.alastairwyse.applicationaccessclient.UniqueStringifier;
 
 /**
- * An implementation of {@link IUniqueStringifier} for strings.
+ * An implementation of {@link UniqueStringifier} for strings.
  */
 public class StringUniqueStringifier implements UniqueStringifier<String>{
 

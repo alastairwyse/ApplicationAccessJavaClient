@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.Builder;
+import java.net.http.HttpResponse;
 import java.util.function.Consumer;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,11 +16,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import net.alastairwyse.applicationaccessclient.UniqueStringifier;
 import net.alastairwyse.applicationaccessclient.exceptions.DeserializationException;
 import net.alastairwyse.applicationaccessclient.exceptions.ElementNotFoundException;
-import net.alastairwyse.applicationaccessclient.StringUniqueStringifier;
-import net.alastairwyse.applicationaccessclient.exceptions.DeserializationException;
 import net.alastairwyse.applicationaccessclient.exceptions.NotFoundException;
 import net.alastairwyse.applicationaccessclient.models.HttpErrorResponse;
 
@@ -52,10 +49,135 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
     protected UniqueStringifier<TAccess> accessLevelStringifier;
     /** Whether the HttpClient member was instantiated within the class constructor */
     protected Boolean httpClientInstantiatedInConstructor;
-    /** Indicates whether the object has been disposed. */
-    protected Boolean disposed;
+
+    /**
+     * Constructs an AccessManagerClientBase.
+     * 
+     * @param baseUrl The base URL for the hosted Web API.
+     * @param userStringifier A string converter for users.  Used to convert strings sent to and received from the web API from/to TUser instances.
+     * @param groupStringifier A string converter for groups.  Used to convert strings sent to and received from the web API from/to TGroup instances.
+     * @param applicationComponentStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param accessLevelStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     */
+    public AccessManagerClientBase(
+        URI baseUrl, 
+        UniqueStringifier<TUser> userStringifier, 
+        UniqueStringifier<TGroup> groupStringifier, 
+        UniqueStringifier<TComponent> applicationComponentStringifier, 
+        UniqueStringifier<TAccess> accessLevelStringifier
+    ) {
+        httpClient = HttpClient.newHttpClient();
+        setBaseConstructorParameters(baseUrl, userStringifier, groupStringifier, applicationComponentStringifier, accessLevelStringifier);
+        httpClientInstantiatedInConstructor = true;
+    }
+
+    /**
+     * Constructs an AccessManagerClientBase.
+     * 
+     * @param httpClient The client to use to connect.
+     * @param baseUrl The base URL for the hosted Web API.
+     * @param userStringifier A string converter for users.  Used to convert strings sent to and received from the web API from/to TUser instances.
+     * @param groupStringifier A string converter for groups.  Used to convert strings sent to and received from the web API from/to TGroup instances.
+     * @param applicationComponentStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param accessLevelStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     */
+    public AccessManagerClientBase(
+        HttpClient httpClient, 
+        URI baseUrl, 
+        UniqueStringifier<TUser> userStringifier, 
+        UniqueStringifier<TGroup> groupStringifier, 
+        UniqueStringifier<TComponent> applicationComponentStringifier, 
+        UniqueStringifier<TAccess> accessLevelStringifier
+    ) {
+        this.httpClient = httpClient;
+        setBaseConstructorParameters(baseUrl, userStringifier, groupStringifier, applicationComponentStringifier, accessLevelStringifier);
+        httpClientInstantiatedInConstructor = false;
+    }
 
     //#region Private/Protected Methods
+
+    /**
+     * Sends an HTTP GET request, expecting a 200 status returned to indicate success, and attempting to deserialize the response body to the specified type.
+     * 
+     * @param <T> The type to deserialize the response body to. 
+     * @param requestUrl The URL of the request.
+     * @return The response body deserialized to the specified type.
+     */
+    protected <T> T  sendGetRequest(URI requestUrl) {
+
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Sends an HTTP GET request, expecting either a 200 or 404 status returned, and converting the status to an equivalent boolean value.
+     * 
+     * @param requestUrl The URL of the request.
+     * @return True in the case a 200 response status is received, or false in the case a 404 status is received.
+     */
+    protected boolean sendGetRequestForContainsMethod(URI requestUrl) {
+
+        throw new UnsupportedOperationException();
+
+    }
+
+    /**
+     * Sends an HTTP POST request, expecting a 201 status returned to indicate success.
+     * 
+     * @param requestUrl The URL of the request.
+     */
+    protected void sendPostRequest(URI requestUrl) {
+
+        throw new UnsupportedOperationException();
+
+    }
+
+    /**
+     * Sends an HTTP DELETE request, expecting a 200 status returned to indicate success.
+     * 
+     * @param requestUrl The URL of the request.
+     */
+    protected void sendDeleteRequest(URI requestUrl) {
+
+        throw new UnsupportedOperationException();
+
+    }
+
+    /**
+     * Sends an HTTP request.
+     * 
+     * @param method The HTTP method to use in the request.
+     * @param requestUrl The URL of the request.
+     * @param responseAction An action to perform on receiving a response to the request.  Accepts a {@link ResponseFunctionParameters} object parameter.
+     */
+    protected void sendRequest(HttpMethod method, URI requestUrl, Consumer<ResponseFunctionParameters> responseAction) {
+
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Performs setup for a minimal/common set of constructor parameters.
+     * 
+     * @param baseUrl The base URL for the hosted Web API.
+     * @param userStringifier A string converter for users.  Used to convert strings sent to and received from the web API from/to TUser instances.
+     * @param groupStringifier A string converter for groups.  Used to convert strings sent to and received from the web API from/to TGroup instances.
+     * @param applicationComponentStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param accessLevelStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     */
+    protected void setBaseConstructorParameters (
+        URI baseUrl, 
+        UniqueStringifier<TUser> userStringifier, 
+        UniqueStringifier<TGroup> groupStringifier, 
+        UniqueStringifier<TComponent> applicationComponentStringifier, 
+        UniqueStringifier<TAccess> accessLevelStringifier
+    ) {
+        initializeBaseUrk(baseUrl);
+        errorResponseDeserializer = new HttpErrorResponseJsonSerializer();
+        initializeStatusCodeToExceptionThrowingActionMap();
+        this.userStringifier = userStringifier;
+        this.groupStringifier = groupStringifier;
+        this.applicationComponentStringifier = applicationComponentStringifier;
+        this.accessLevelStringifier = accessLevelStringifier;
+    }
 
     /**
      * Adds an appropriate path suffix to the specified 'baseUrl' constructor parameter.
@@ -238,6 +360,69 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
     public void close() throws IOException {
         if (httpClientInstantiatedInConstructor == true) {
             httpClient.close();
+        }
+    }
+
+    ////#endregion
+
+    //#region Nested Classes
+
+    /**
+     * Container/model class holding parameters passed to a routine which handles a {@link HttpResponse}.
+     */
+    protected class ResponseFunctionParameters {
+
+        /** The HTTP method called in the request which creatd the response. */
+        protected HttpMethod httpMethod;
+        /** The URL called in the request which creatd the response. */
+        protected URI requestUrl;
+        /** The HTTP status of the response. */
+        protected int responseStatus;
+        /** The body of the response as a string. */
+        protected String responseBody;
+
+        /** 
+         * @return The HTTP method called in the request which creatd the response.
+         */
+        public HttpMethod getHttpMethod() {
+            return httpMethod; 
+        }
+
+        /** 
+         * @return The URL called in the request which creatd the response.
+         */
+        public URI getRequestUrl() {
+            return requestUrl; 
+        }
+
+        /** 
+         * @return The HTTP status of the response.
+         */
+        public int getResponseStatus() {
+            return responseStatus; 
+        }
+
+        /** 
+         * @return The body of the response as a string.
+         */
+        public String getResponseBody() {
+            return responseBody; 
+        }
+
+        /**
+         * Constructs a ResponseFunctionParameters.
+         * 
+         * @param httpMethod The HTTP method called in the request which creatd the response.
+         * @param requestUrl The URL called in the request which creatd the response.
+         * @param responseStatus The HTTP status of the response.
+         * @param responseBody The body of the response as a string.
+         */
+        public ResponseFunctionParameters(HttpMethod httpMethod, URI requestUrl, int responseStatus, String responseBody) {
+
+            this.httpMethod = httpMethod;
+            this.requestUrl = requestUrl;
+            this.responseStatus = responseStatus;
+            this.responseBody = responseBody;
         }
     }
 
