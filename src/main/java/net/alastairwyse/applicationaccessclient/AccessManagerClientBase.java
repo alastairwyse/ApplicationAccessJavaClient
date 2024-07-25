@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
 import java.util.function.Consumer;
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -20,6 +22,7 @@ import net.alastairwyse.applicationaccessclient.exceptions.DeserializationExcept
 import net.alastairwyse.applicationaccessclient.exceptions.ElementNotFoundException;
 import net.alastairwyse.applicationaccessclient.exceptions.NotFoundException;
 import net.alastairwyse.applicationaccessclient.models.HttpErrorResponse;
+import net.alastairwyse.applicationaccessclient.HttpMethod;;
 
 /**
  * Base for client classes which interface to AccessManager instances hosted as REST web APIs.
@@ -31,6 +34,13 @@ import net.alastairwyse.applicationaccessclient.models.HttpErrorResponse;
  */
 public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess> implements AutoCloseable {
     
+    // TODO:
+    //   Params
+    //   Timeout?
+    //   Headers
+    //   Proxy setting
+    //   Cert
+
     /** The client to use to connect. */
     protected HttpClient httpClient;
     /** The base URL for the hosted Web API. */
@@ -39,6 +49,8 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
     protected HttpErrorResponseJsonSerializer errorResponseDeserializer;
     /** Maps an HTTP status code to an Consumer which throws a matching Exception to the status code.  The Consumer accepts 1 parameter: the {@link HttpErrorResponse} representing the exception. */
     protected Map<Integer, Consumer<HttpErrorResponse>> statusCodeToExceptionThrowingActionMap;
+    /** Used to deserialize DTO objects returned from the web API. */
+    protected ObjectMapper objectMapper;
     /** A string converter for users.  Used to convert strings sent to and received from the web API from/to TUser instances. */
     protected UniqueStringifier<TUser> userStringifier;
     /** A string converter for groups.  Used to convert strings sent to and received from the web API from/to TGroup instances. */
@@ -101,11 +113,35 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
      * 
      * @param <T> The type to deserialize the response body to. 
      * @param requestUrl The URL of the request.
+     * @param returnType The type to deserialize the response to and return.
      * @return The response body deserialized to the specified type.
+     * 
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
      */
-    protected <T> T  sendGetRequest(URI requestUrl) {
+    protected <T> T sendGetRequest(URI requestUrl, TypeReference<T> returnType) throws IOException, InterruptedException {
 
-        throw new UnsupportedOperationException();
+        Builder requestBuilder = HttpRequest.newBuilder(requestUrl).GET();
+        setHttpRequestAcceptHeader(requestBuilder);
+        HttpResponse<String> response = HttpClient.newHttpClient().send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 200) {
+            handleNonSuccessResponseStatus(HttpMethod.GET, requestUrl, response.statusCode(), response.body());
+        }
+        try {
+            return objectMapper.readValue(response.body(), returnType);
+        }
+        catch (JsonProcessingException e) {
+            throw new RuntimeException(
+                String.format(
+                    "Failed to call URL '%s' with '%s' method.  Error deserializing response body from JSON to type.", 
+                    requestUrl.toString(), 
+                    HttpMethod.GET
+                ), 
+                e
+            );
+        }
     }
 
     /**
@@ -113,45 +149,63 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
      * 
      * @param requestUrl The URL of the request.
      * @return True in the case a 200 response status is received, or false in the case a 404 status is received.
+     *
+     * @exception RuntimeException If an unexpected response status was received.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
      */
-    protected boolean sendGetRequestForContainsMethod(URI requestUrl) {
+    protected boolean sendGetRequestForContainsMethod(URI requestUrl) throws IOException, InterruptedException {
 
-        throw new UnsupportedOperationException();
+        boolean returnValue = false;
+        Builder requestBuilder = HttpRequest.newBuilder(requestUrl).GET();
+        setHttpRequestAcceptHeader(requestBuilder);
+        HttpResponse<String> response = HttpClient.newHttpClient().send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+        if (!((response.statusCode() != 200) || (response.statusCode() != 404))) {
+            handleNonSuccessResponseStatus(HttpMethod.GET, requestUrl, response.statusCode(), response.body());
+        }
+        if (response.statusCode() == 404) {
+            returnValue = true;
+        }
 
+        return returnValue;
     }
 
     /**
      * Sends an HTTP POST request, expecting a 201 status returned to indicate success.
      * 
      * @param requestUrl The URL of the request.
+     * 
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
      */
-    protected void sendPostRequest(URI requestUrl) {
+    protected void sendPostRequest(URI requestUrl) throws IOException, InterruptedException {
 
-        throw new UnsupportedOperationException();
-
+        Builder requestBuilder = HttpRequest.newBuilder(requestUrl).POST(HttpRequest.BodyPublishers.noBody());
+        setHttpRequestAcceptHeader(requestBuilder);
+        HttpResponse<String> response = HttpClient.newHttpClient().send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 201) {
+            handleNonSuccessResponseStatus(HttpMethod.POST, requestUrl, response.statusCode(), response.body());
+        }
     }
 
     /**
      * Sends an HTTP DELETE request, expecting a 200 status returned to indicate success.
      * 
      * @param requestUrl The URL of the request.
-     */
-    protected void sendDeleteRequest(URI requestUrl) {
-
-        throw new UnsupportedOperationException();
-
-    }
-
-    /**
-     * Sends an HTTP request.
      * 
-     * @param method The HTTP method to use in the request.
-     * @param requestUrl The URL of the request.
-     * @param responseAction An action to perform on receiving a response to the request.  Accepts a {@link ResponseFunctionParameters} object parameter.
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
      */
-    protected void sendRequest(HttpMethod method, URI requestUrl, Consumer<ResponseFunctionParameters> responseAction) {
+    protected void sendDeleteRequest(URI requestUrl) throws IOException, InterruptedException {
 
-        throw new UnsupportedOperationException();
+        Builder requestBuilder = HttpRequest.newBuilder(requestUrl).DELETE();
+        setHttpRequestAcceptHeader(requestBuilder);
+        HttpResponse<String> response = HttpClient.newHttpClient().send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 201) {
+            handleNonSuccessResponseStatus(HttpMethod.DELETE, requestUrl, response.statusCode(), response.body());
+        }
     }
 
     /**
@@ -173,6 +227,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         initializeBaseUrk(baseUrl);
         errorResponseDeserializer = new HttpErrorResponseJsonSerializer();
         initializeStatusCodeToExceptionThrowingActionMap();
+        objectMapper = new ObjectMapper();
         this.userStringifier = userStringifier;
         this.groupStringifier = groupStringifier;
         this.applicationComponentStringifier = applicationComponentStringifier;
@@ -189,7 +244,22 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
             this.baseUrl = new URI(baseUrl.toString() + "api/v1/");
         }
         catch (URISyntaxException e) {
-            throw new IllegalArgumentException(String.format("Failed to append API suffix to base URL %s.", baseUrl.toString()), e);
+            throw new IllegalArgumentException(String.format("Failed to append API suffix to base URL '%s'.", baseUrl.toString()), e);
+        }
+    }
+
+    /**
+     * Concatenates the specified path (with no leading forward slash) to the 'baseUrl' property and returns it as a new {@link URI} 
+     * 
+     * @param path The path to concatenate.
+     * @return The concatenated URL.
+     */
+    protected URI appendPathToBaseUrl(String path) {
+        try {
+            return new URI(baseUrl + path);
+        }
+        catch (URISyntaxException e) {
+            throw new RuntimeException(String.format("Failed to append path '%s' to base URL '%s'.", path, baseUrl.toString()), e);
         }
     }
 
@@ -268,7 +338,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
      * 
      * @exception RuntimeException The exception generated from the HTTP response.
      */
-    protected void HandleNonSuccessResponseStatus(HttpMethod method, URI requestUrl, int responseStatus, String responseBody) {
+    protected void handleNonSuccessResponseStatus(HttpMethod method, URI requestUrl, int responseStatus, String responseBody) {
 
         String baseExceptionMessage = String.format(
             "Failed to call URL '%s' with '%s' method.  Received non-succces HTTP response status %d",
@@ -277,7 +347,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         );
 
         // Attempt to deserialize a HttpErrorResponse from the body
-        HttpErrorResponse httpErrorResponse = DeserializeResponseBodyToHttpErrorResponse(responseBody);
+        HttpErrorResponse httpErrorResponse = deserializeResponseBodyToHttpErrorResponse(responseBody);
         if (httpErrorResponse != null) {
             if (statusCodeToExceptionThrowingActionMap.containsKey(responseStatus) == true) {
                 statusCodeToExceptionThrowingActionMap.get(responseStatus).accept(httpErrorResponse);
@@ -307,7 +377,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
      * @param responseBody The response body to deserialize.
      * @return The deserialized response body, or null if the reponse could not be deserialized (e.g. was empty, or did not contain JSON).
      */
-    protected HttpErrorResponse DeserializeResponseBodyToHttpErrorResponse(String responseBody)
+    protected HttpErrorResponse deserializeResponseBodyToHttpErrorResponse(String responseBody)
     {
         ObjectMapper objectMapper = new ObjectMapper();
 

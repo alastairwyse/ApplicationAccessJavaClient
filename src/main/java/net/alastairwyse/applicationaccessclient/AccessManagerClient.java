@@ -1,6 +1,16 @@
 package net.alastairwyse.applicationaccessclient;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.jsontype.impl.AsArrayTypeSerializer;
+
+import java.net.URI;
+import java.net.http.HttpClient;
 
 import net.alastairwyse.applicationaccessclient.models.ApplicationComponentAndAccessLevel;
 import net.alastairwyse.applicationaccessclient.models.EntityTypeAndEntity;
@@ -13,23 +23,104 @@ import net.alastairwyse.applicationaccessclient.models.EntityTypeAndEntity;
  * @param <TComponent> The type of components in the AccessManager.
  * @param <TAccess> The type of levels of access which can be assigned to an application component.
  */
-public class AccessManagerClient<TUser, TGroup, TComponent, TAccess> implements
-    AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>, 
+public class AccessManagerClient<TUser, TGroup, TComponent, TAccess> 
+    extends AccessManagerClientBase<TUser, TGroup, TComponent, TAccess> 
+    implements AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>, 
     AccessManagerQueryProcessor<TUser, TGroup, TComponent, TAccess> {
 
-    @Override
-    public Iterable<String> getUsers() {
-        throw new UnsupportedOperationException();
+    /**
+     * Constructs an AccessManagerClient.
+     * 
+     * @param baseUrl The base URL for the hosted Web API.
+     * @param userStringifier A string converter for users.  Used to convert strings sent to and received from the web API from/to TUser instances.
+     * @param groupStringifier A string converter for groups.  Used to convert strings sent to and received from the web API from/to TGroup instances.
+     * @param applicationComponentStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param accessLevelStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     */
+    public AccessManagerClient(
+        URI baseUrl, 
+        UniqueStringifier<TUser> userStringifier, 
+        UniqueStringifier<TGroup> groupStringifier, 
+        UniqueStringifier<TComponent> applicationComponentStringifier, 
+        UniqueStringifier<TAccess> accessLevelStringifier
+    ) {
+        super(baseUrl, userStringifier, groupStringifier, applicationComponentStringifier, accessLevelStringifier);
     }
 
-    @Override
-    public Iterable<String> getGroups() {
-        throw new UnsupportedOperationException();
+    /**
+     * Constructs an AccessManagerClientBase.
+     * 
+     * @param httpClient The client to use to connect.
+     * @param baseUrl The base URL for the hosted Web API.
+     * @param userStringifier A string converter for users.  Used to convert strings sent to and received from the web API from/to TUser instances.
+     * @param groupStringifier A string converter for groups.  Used to convert strings sent to and received from the web API from/to TGroup instances.
+     * @param applicationComponentStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param accessLevelStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     */
+    public AccessManagerClient(
+        HttpClient httpClient, 
+        URI baseUrl, 
+        UniqueStringifier<TUser> userStringifier, 
+        UniqueStringifier<TGroup> groupStringifier, 
+        UniqueStringifier<TComponent> applicationComponentStringifier, 
+        UniqueStringifier<TAccess> accessLevelStringifier
+    ) {
+        super(httpClient, baseUrl, userStringifier, groupStringifier, applicationComponentStringifier, accessLevelStringifier);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public Iterable<String> getEntityTypes() {
-        throw new UnsupportedOperationException();
+    public List<TUser> getUsers() throws IOException, InterruptedException {
+
+        var url = new URI(baseUrl.toString() + "users");
+        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        var results = new ArrayList<TUser>();
+        for (String currentRawResult : rawResults) {
+            results.add(userStringifier.fromString(currentRawResult))
+        }
+
+        return results;
+    }
+
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
+    @Override
+    public List<TGroup> getGroups() throws IOException, InterruptedException {
+
+        var url = new URI(baseUrl.toString() + "groups");
+        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        var results = new ArrayList<TGroup>();
+        for (String currentRawResult : rawResults) {
+            results.add(groupStringifier.fromString(currentRawResult))
+        }
+
+        return results;
+    }
+
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
+    @Override
+    public List<String> getEntityTypes() throws IOException, InterruptedException {
+
+        URI url = appendPathToBaseUrl("entityTypes");
+
+        return sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
     }
 
     @Override
@@ -68,12 +159,12 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess> implements
     }
 
     @Override
-    public HashSet<TGroup> getUserToGroupMappings(TUser user, boolean includeIndirectMappings) {
+    public Set<TGroup> getUserToGroupMappings(TUser user, boolean includeIndirectMappings) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public HashSet<TUser> getGroupToUserMappings(TGroup group, Boolean includeIndirectMappings) {
+    public Set<TUser> getGroupToUserMappings(TGroup group, Boolean includeIndirectMappings) {
         throw new UnsupportedOperationException();
     }
 
@@ -88,12 +179,12 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess> implements
     }
 
     @Override
-    public HashSet<TGroup> getGroupToGroupMappings(TGroup group, boolean includeIndirectMappings) {
+    public Set<TGroup> getGroupToGroupMappings(TGroup group, boolean includeIndirectMappings) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public HashSet<TGroup> getGroupToGroupReverseMappings(TGroup group, Boolean includeIndirectMappings) {
+    public Set<TGroup> getGroupToGroupReverseMappings(TGroup group, Boolean includeIndirectMappings) {
         throw new UnsupportedOperationException();
     }
 
@@ -108,12 +199,12 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess> implements
     }
 
     @Override
-    public Iterable<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getUserToApplicationComponentAndAccessLevelMappings(TUser user) {
+    public List<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getUserToApplicationComponentAndAccessLevelMappings(TUser user) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Iterable<TUser> getApplicationComponentAndAccessLevelToUserMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) {
+    public List<TUser> getApplicationComponentAndAccessLevelToUserMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) {
         throw new UnsupportedOperationException();
     }
 
@@ -128,12 +219,12 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess> implements
     }
 
     @Override
-    public Iterable<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getGroupToApplicationComponentAndAccessLevelMappings(TGroup group) {
+    public List<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getGroupToApplicationComponentAndAccessLevelMappings(TGroup group) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Iterable<TGroup> getApplicationComponentAndAccessLevelToGroupMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) {
+    public List<TGroup> getApplicationComponentAndAccessLevelToGroupMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) {
         throw new UnsupportedOperationException();
     }
 
@@ -163,7 +254,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess> implements
     }
 
     @Override
-    public Iterable<String> getEntities(String entityType) {
+    public List<String> getEntities(String entityType) {
         throw new UnsupportedOperationException();
     }
 
@@ -183,17 +274,17 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess> implements
     }
 
     @Override
-    public Iterable<EntityTypeAndEntity> getUserToEntityMappings(TUser user) {
+    public List<EntityTypeAndEntity> getUserToEntityMappings(TUser user) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Iterable<String> getUserToEntityMappings(TUser user, String entityType) {
+    public List<String> getUserToEntityMappings(TUser user, String entityType) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Iterable<TUser> getEntityToUserMappings(String entityType, String entity, Boolean includeIndirectMappings) {
+    public List<TUser> getEntityToUserMappings(String entityType, String entity, Boolean includeIndirectMappings) {
         throw new UnsupportedOperationException();
     }
 
@@ -208,17 +299,17 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess> implements
     }
 
     @Override
-    public Iterable<EntityTypeAndEntity> getGroupToEntityMappings(TGroup group) {
+    public List<EntityTypeAndEntity> getGroupToEntityMappings(TGroup group) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Iterable<String> getGroupToEntityMappings(TGroup group, String entityType) {
+    public List<String> getGroupToEntityMappings(TGroup group, String entityType) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Iterable<TGroup> getEntityToGroupMappings(String entityType, String entity, Boolean includeIndirectMappings) {
+    public List<TGroup> getEntityToGroupMappings(String entityType, String entity, Boolean includeIndirectMappings) {
         throw new UnsupportedOperationException();
     }
 
@@ -238,32 +329,32 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess> implements
     }
 
     @Override
-    public HashSet<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getApplicationComponentsAccessibleByUser(TUser user) {
+    public Set<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getApplicationComponentsAccessibleByUser(TUser user) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public HashSet<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getApplicationComponentsAccessibleByGroup(TGroup group) {
+    public Set<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getApplicationComponentsAccessibleByGroup(TGroup group) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public HashSet<EntityTypeAndEntity> getEntitiesAccessibleByUser(TUser user) {
+    public Set<EntityTypeAndEntity> getEntitiesAccessibleByUser(TUser user) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public HashSet<String> getEntitiesAccessibleByUser(TUser user, String entityType) {
+    public Set<String> getEntitiesAccessibleByUser(TUser user, String entityType) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public HashSet<EntityTypeAndEntity> getEntitiesAccessibleByGroup(TGroup group) {
+    public Set<EntityTypeAndEntity> getEntitiesAccessibleByGroup(TGroup group) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public HashSet<String> getEntitiesAccessibleByGroup(TGroup group, String entityType) {
+    public Set<String> getEntitiesAccessibleByGroup(TGroup group, String entityType) {
         throw new UnsupportedOperationException();
     }
 }
