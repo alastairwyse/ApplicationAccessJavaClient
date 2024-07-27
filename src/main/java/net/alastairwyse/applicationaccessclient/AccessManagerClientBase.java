@@ -125,7 +125,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
 
         Builder requestBuilder = HttpRequest.newBuilder(requestUrl).GET();
         setHttpRequestAcceptHeader(requestBuilder);
-        HttpResponse<String> response = HttpClient.newHttpClient().send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != 200) {
             handleNonSuccessResponseStatus(HttpMethod.GET, requestUrl, response.statusCode(), response.body());
         }
@@ -159,7 +159,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         boolean returnValue = false;
         Builder requestBuilder = HttpRequest.newBuilder(requestUrl).GET();
         setHttpRequestAcceptHeader(requestBuilder);
-        HttpResponse<String> response = HttpClient.newHttpClient().send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
         if (!((response.statusCode() != 200) || (response.statusCode() != 404))) {
             handleNonSuccessResponseStatus(HttpMethod.GET, requestUrl, response.statusCode(), response.body());
         }
@@ -183,7 +183,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
 
         Builder requestBuilder = HttpRequest.newBuilder(requestUrl).POST(HttpRequest.BodyPublishers.noBody());
         setHttpRequestAcceptHeader(requestBuilder);
-        HttpResponse<String> response = HttpClient.newHttpClient().send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != 201) {
             handleNonSuccessResponseStatus(HttpMethod.POST, requestUrl, response.statusCode(), response.body());
         }
@@ -202,8 +202,8 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
 
         Builder requestBuilder = HttpRequest.newBuilder(requestUrl).DELETE();
         setHttpRequestAcceptHeader(requestBuilder);
-        HttpResponse<String> response = HttpClient.newHttpClient().send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
-        if (response.statusCode() != 201) {
+        HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() != 200) {
             handleNonSuccessResponseStatus(HttpMethod.DELETE, requestUrl, response.statusCode(), response.body());
         }
     }
@@ -255,12 +255,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
      * @return The concatenated URL.
      */
     protected URI appendPathToBaseUrl(String path) {
-        try {
-            return new URI(baseUrl + path);
-        }
-        catch (URISyntaxException e) {
-            throw new RuntimeException(String.format("Failed to append path '%s' to base URL '%s'.", path, baseUrl.toString()), e);
-        }
+        return baseUrl.resolve(path);
     }
 
     /**

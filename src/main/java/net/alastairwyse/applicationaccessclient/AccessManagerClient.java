@@ -1,16 +1,14 @@
 package net.alastairwyse.applicationaccessclient;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.jsontype.impl.AsArrayTypeSerializer;
-
-import java.net.URI;
-import java.net.http.HttpClient;
 
 import net.alastairwyse.applicationaccessclient.models.ApplicationComponentAndAccessLevel;
 import net.alastairwyse.applicationaccessclient.models.EntityTypeAndEntity;
@@ -48,7 +46,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     }
 
     /**
-     * Constructs an AccessManagerClientBase.
+     * Constructs an AccessManagerClient.
      * 
      * @param httpClient The client to use to connect.
      * @param baseUrl The base URL for the hosted Web API.
@@ -78,11 +76,11 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     @Override
     public List<TUser> getUsers() throws IOException, InterruptedException {
 
-        var url = new URI(baseUrl.toString() + "users");
+        var url = appendPathToBaseUrl("users");
         ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
         var results = new ArrayList<TUser>();
         for (String currentRawResult : rawResults) {
-            results.add(userStringifier.fromString(currentRawResult))
+            results.add(userStringifier.fromString(currentRawResult));
         }
 
         return results;
@@ -98,11 +96,11 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     @Override
     public List<TGroup> getGroups() throws IOException, InterruptedException {
 
-        var url = new URI(baseUrl.toString() + "groups");
+        var url = appendPathToBaseUrl("groups");
         ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
         var results = new ArrayList<TGroup>();
         for (String currentRawResult : rawResults) {
-            results.add(groupStringifier.fromString(currentRawResult))
+            results.add(groupStringifier.fromString(currentRawResult));
         }
 
         return results;
@@ -118,7 +116,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     @Override
     public List<String> getEntityTypes() throws IOException, InterruptedException {
 
-        URI url = appendPathToBaseUrl("entityTypes");
+        var url = appendPathToBaseUrl("entityTypes");
 
         return sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
     }
@@ -158,14 +156,52 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public Set<TGroup> getUserToGroupMappings(TUser user, boolean includeIndirectMappings) {
-        throw new UnsupportedOperationException();
+    public List<TGroup> getUserToGroupMappings(TUser user, boolean includeIndirectMappings) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToGroupMappings/user/%s?includeIndirectMappings=%s",
+                userStringifier.toString(user), 
+                includeIndirectMappings
+            )
+        );
+        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        var results = new ArrayList<TGroup>();
+        for (String currentRawResult : rawResults) {
+            results.add(groupStringifier.fromString(currentRawResult));
+        }
+
+        return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public Set<TUser> getGroupToUserMappings(TGroup group, Boolean includeIndirectMappings) {
-        throw new UnsupportedOperationException();
+    public List<TUser> getGroupToUserMappings(TGroup group, Boolean includeIndirectMappings) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToGroupMappings/group/%s?includeIndirectMappings=%s",
+                groupStringifier.toString(group), 
+                includeIndirectMappings
+            )
+        );
+        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        var results = new ArrayList<TUser>();
+        for (String currentRawResult : rawResults) {
+            results.add(userStringifier.fromString(currentRawResult));
+        }
+
+        return results;
     }
 
     @Override
@@ -178,14 +214,52 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public Set<TGroup> getGroupToGroupMappings(TGroup group, boolean includeIndirectMappings) {
-        throw new UnsupportedOperationException();
+    public List<TGroup> getGroupToGroupMappings(TGroup group, boolean includeIndirectMappings) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToGroupMappings/group/%s?includeIndirectMappings=%s",
+                groupStringifier.toString(group), 
+                includeIndirectMappings
+            )
+        );
+        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        var results = new ArrayList<TGroup>();
+        for (String currentRawResult : rawResults) {
+            results.add(groupStringifier.fromString(currentRawResult));
+        }
+
+        return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public Set<TGroup> getGroupToGroupReverseMappings(TGroup group, Boolean includeIndirectMappings) {
-        throw new UnsupportedOperationException();
+    public List<TGroup> getGroupToGroupReverseMappings(TGroup group, Boolean includeIndirectMappings) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToGroupReverseMappings/group/%s?includeIndirectMappings=%s",
+                groupStringifier.toString(group), 
+                includeIndirectMappings
+            )
+        );
+        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        var results = new ArrayList<TGroup>();
+        for (String currentRawResult : rawResults) {
+            results.add(groupStringifier.fromString(currentRawResult));
+        }
+
+        return results;
     }
 
     @Override
@@ -198,14 +272,55 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public List<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getUserToApplicationComponentAndAccessLevelMappings(TUser user) {
-        throw new UnsupportedOperationException();
+    public List<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getUserToApplicationComponentAndAccessLevelMappings(TUser user) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToApplicationComponentAndAccessLevelMappings/user/%s?includeIndirectMappings=false",
+                userStringifier.toString(user)
+            )
+        );
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel>>(){});
+        var results = new ArrayList<ApplicationComponentAndAccessLevel<TComponent, TAccess>>();
+        for (var currentRawResult : rawResults) {
+            results.add(new ApplicationComponentAndAccessLevel<TComponent,TAccess>(
+                applicationComponentStringifier.fromString(currentRawResult.ApplicationComponent), 
+                accessLevelStringifier.fromString(currentRawResult.AccessLevel)
+            ));
+        }
+
+        return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public List<TUser> getApplicationComponentAndAccessLevelToUserMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) {
-        throw new UnsupportedOperationException();
+    public List<TUser> getApplicationComponentAndAccessLevelToUserMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToApplicationComponentAndAccessLevelMappings/applicationComponent/%s/accessLevel/%s?includeIndirectMappings=%s",
+                applicationComponentStringifier.toString(applicationComponent), 
+                accessLevelStringifier.toString(accessLevel), 
+                includeIndirectMappings
+            )
+        );
+        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        var results = new ArrayList<TUser>();
+        for (String currentRawResult : rawResults) {
+            results.add(userStringifier.fromString(currentRawResult));
+        }
+
+        return results;
     }
 
     @Override
@@ -218,14 +333,55 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public List<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getGroupToApplicationComponentAndAccessLevelMappings(TGroup group) {
-        throw new UnsupportedOperationException();
+    public List<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getGroupToApplicationComponentAndAccessLevelMappings(TGroup group) throws IOException, InterruptedException {
+        
+        var url = appendPathToBaseUrl(String.format("groupToApplicationComponentAndAccessLevelMappings/group/%s?includeIndirectMappings=false",
+                groupStringifier.toString(group)
+            )
+        );
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel>>(){});
+        var results = new ArrayList<ApplicationComponentAndAccessLevel<TComponent, TAccess>>();
+        for (var currentRawResult : rawResults) {
+            results.add(new ApplicationComponentAndAccessLevel<TComponent,TAccess>(
+                applicationComponentStringifier.fromString(currentRawResult.ApplicationComponent), 
+                accessLevelStringifier.fromString(currentRawResult.AccessLevel)
+            ));
+        }
+
+        return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public List<TGroup> getApplicationComponentAndAccessLevelToGroupMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) {
-        throw new UnsupportedOperationException();
+    public List<TGroup> getApplicationComponentAndAccessLevelToGroupMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToApplicationComponentAndAccessLevelMappings/applicationComponent/%s/accessLevel/%s?includeIndirectMappings=%s",
+                applicationComponentStringifier.toString(applicationComponent), 
+                accessLevelStringifier.toString(accessLevel), 
+                includeIndirectMappings
+            )
+        );
+        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        var results = new ArrayList<TGroup>();
+        for (String currentRawResult : rawResults) {
+            results.add(groupStringifier.fromString(currentRawResult));
+        }
+
+        return results;
     }
 
     @Override
@@ -253,9 +409,19 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public List<String> getEntities(String entityType) {
-        throw new UnsupportedOperationException();
+    public List<String> getEntities(String entityType) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("entityTypes/%s/entities", entityType));
+
+        return sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
     }
 
     @Override
@@ -273,19 +439,74 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public List<EntityTypeAndEntity> getUserToEntityMappings(TUser user) {
-        throw new UnsupportedOperationException();
+    public List<EntityTypeAndEntity> getUserToEntityMappings(TUser user) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToEntityMappings/user/%s?includeIndirectMappings=false",
+                userStringifier.toString(user)
+            )
+        );
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity>>(){});
+        var results = new ArrayList<EntityTypeAndEntity>();
+        for (var currentRawResult : rawResults) {
+            results.add(new EntityTypeAndEntity(
+                currentRawResult.EntityType, 
+                currentRawResult.Entity
+            ));
+        }
+
+        return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public List<String> getUserToEntityMappings(TUser user, String entityType) {
-        throw new UnsupportedOperationException();
+    public List<String> getUserToEntityMappings(TUser user, String entityType) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToEntityMappings/user/%s/entityType/%s?includeIndirectMappings=false",
+                userStringifier.toString(user), 
+                entityType
+            )
+        );
+
+        return sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public List<TUser> getEntityToUserMappings(String entityType, String entity, Boolean includeIndirectMappings) {
-        throw new UnsupportedOperationException();
+    public List<TUser> getEntityToUserMappings(String entityType, String entity, Boolean includeIndirectMappings) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToEntityMappings/entityType/%s/entity/%s?includeIndirectMappings=%s",
+                entityType, 
+                entity, 
+                includeIndirectMappings
+            )
+        );
+        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        var results = new ArrayList<TUser>();
+        for (String currentRawResult : rawResults) {
+            results.add(userStringifier.fromString(currentRawResult));
+        }
+
+        return results;
     }
 
     @Override
@@ -298,19 +519,74 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public List<EntityTypeAndEntity> getGroupToEntityMappings(TGroup group) {
-        throw new UnsupportedOperationException();
+    public List<EntityTypeAndEntity> getGroupToEntityMappings(TGroup group) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToEntityMappings/group/%s?includeIndirectMappings=false",
+                groupStringifier.toString(group)
+            )
+        );
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity>>(){});
+        var results = new ArrayList<EntityTypeAndEntity>();
+        for (var currentRawResult : rawResults) {
+            results.add(new EntityTypeAndEntity(
+                currentRawResult.EntityType, 
+                currentRawResult.Entity
+            ));
+        }
+
+        return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public List<String> getGroupToEntityMappings(TGroup group, String entityType) {
-        throw new UnsupportedOperationException();
+    public List<String> getGroupToEntityMappings(TGroup group, String entityType) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToEntityMappings/group/%s/entityType/%s?includeIndirectMappings=false",
+                groupStringifier.toString(group), 
+                entityType
+            )
+        );
+        
+        return sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public List<TGroup> getEntityToGroupMappings(String entityType, String entity, Boolean includeIndirectMappings) {
-        throw new UnsupportedOperationException();
+    public List<TGroup> getEntityToGroupMappings(String entityType, String entity, Boolean includeIndirectMappings) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToEntityMappings/entityType/%s/entity/%s?includeIndirectMappings=%s",
+                entityType, 
+                entity, 
+                includeIndirectMappings
+            )
+        );
+        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        var results = new ArrayList<TGroup>();
+        for (String currentRawResult : rawResults) {
+            results.add(groupStringifier.fromString(currentRawResult));
+        }
+
+        return results;
     }
 
     @Override
@@ -328,33 +604,155 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public Set<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getApplicationComponentsAccessibleByUser(TUser user) {
-        throw new UnsupportedOperationException();
+    public Set<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getApplicationComponentsAccessibleByUser(TUser user) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToApplicationComponentAndAccessLevelMappings/user/%s?includeIndirectMappings=true",
+                userStringifier.toString(user)
+            )
+        );
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel>>(){});
+        var results = new HashSet<ApplicationComponentAndAccessLevel<TComponent, TAccess>>();
+        for (var currentRawResult : rawResults) {
+            results.add(new ApplicationComponentAndAccessLevel<TComponent,TAccess>(
+                applicationComponentStringifier.fromString(currentRawResult.ApplicationComponent), 
+                accessLevelStringifier.fromString(currentRawResult.AccessLevel)
+            ));
+        }
+
+        return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public Set<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getApplicationComponentsAccessibleByGroup(TGroup group) {
-        throw new UnsupportedOperationException();
+    public Set<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getApplicationComponentsAccessibleByGroup(TGroup group) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToApplicationComponentAndAccessLevelMappings/group/%s?includeIndirectMappings=true",
+                groupStringifier.toString(group)
+            )
+        );
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel>>(){});
+        var results = new HashSet<ApplicationComponentAndAccessLevel<TComponent, TAccess>>();
+        for (var currentRawResult : rawResults) {
+            results.add(new ApplicationComponentAndAccessLevel<TComponent,TAccess>(
+                applicationComponentStringifier.fromString(currentRawResult.ApplicationComponent), 
+                accessLevelStringifier.fromString(currentRawResult.AccessLevel)
+            ));
+        }
+
+        return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public Set<EntityTypeAndEntity> getEntitiesAccessibleByUser(TUser user) {
-        throw new UnsupportedOperationException();
+    public Set<EntityTypeAndEntity> getEntitiesAccessibleByUser(TUser user) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToEntityMappings/user/%s?includeIndirectMappings=true",
+                userStringifier.toString(user)
+            )
+        );
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity>>(){});
+        var results = new HashSet<EntityTypeAndEntity>();
+        for (var currentRawResult : rawResults) {
+            results.add(new EntityTypeAndEntity(
+                currentRawResult.EntityType, 
+                currentRawResult.Entity
+            ));
+        }
+
+        return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public Set<String> getEntitiesAccessibleByUser(TUser user, String entityType) {
-        throw new UnsupportedOperationException();
+    public Set<String> getEntitiesAccessibleByUser(TUser user, String entityType) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToEntityMappings/user/%s/entityType/%s?includeIndirectMappings=true",
+                userStringifier.toString(user), 
+                entityType
+            )
+        );
+        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        var results = new HashSet<String>();
+        for (String currentRawResult : rawResults) {
+            results.add(currentRawResult);
+        }
+
+        return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public Set<EntityTypeAndEntity> getEntitiesAccessibleByGroup(TGroup group) {
-        throw new UnsupportedOperationException();
+    public Set<EntityTypeAndEntity> getEntitiesAccessibleByGroup(TGroup group) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToEntityMappings/group/%s?includeIndirectMappings=true",
+                groupStringifier.toString(group)
+            )
+        );
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity>>(){});
+        var results = new HashSet<EntityTypeAndEntity>();
+        for (var currentRawResult : rawResults) {
+            results.add(new EntityTypeAndEntity(
+                currentRawResult.EntityType, 
+                currentRawResult.Entity
+            ));
+        }
+
+        return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public Set<String> getEntitiesAccessibleByGroup(TGroup group, String entityType) {
-        throw new UnsupportedOperationException();
+    public Set<String> getEntitiesAccessibleByGroup(TGroup group, String entityType) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToEntityMappings/group/%s/entityType/%s?includeIndirectMappings=true",
+                groupStringifier.toString(group), 
+                entityType
+            )
+        );
+        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        var results = new HashSet<String>();
+        for (String currentRawResult : rawResults) {
+            results.add(currentRawResult);
+        }
+
+        return results;
     }
 }
