@@ -15,28 +15,28 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * 
      * @param user The user to add.
      */
-    public void addUser(TUser user);
+    public void addUser(TUser user) throws Exception;
 
     /**
      * Removes a user.
      * 
      * @param user The user to remove.
      */
-    public void removeUser(TUser user);
+    public void removeUser(TUser user) throws Exception;
 
     /**
      * Adds a group.
      * 
      * @param group The group to add.
      */
-    public void addGroup(TGroup group);
+    public void addGroup(TGroup group) throws Exception;
 
     /**
      * Removes a group.
      * 
      * @param group The group to remove.
      */
-    public void removeGroup(TGroup group);
+    public void removeGroup(TGroup group) throws Exception;
 
     /**
      * Adds a mapping between the specified user and group.
@@ -44,7 +44,7 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param user The user in the mapping.
      * @param group The group in the mapping.
      */
-    public void addUserToGroupMapping(TUser user, TGroup group);
+    public void addUserToGroupMapping(TUser user, TGroup group) throws Exception;
 
     /**
      * Removes the mapping between the specified user and group.
@@ -52,7 +52,7 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param user The user in the mapping.
      * @param group The group in the mapping.
      */
-    public void removeUserToGroupMapping(TUser user, TGroup group);
+    public void removeUserToGroupMapping(TUser user, TGroup group) throws Exception;
 
     /**
      * Adds a mapping between the specified groups.
@@ -60,7 +60,7 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param fromGroup The 'from' group in the mapping.
      * @param toGroup The 'to' group in the mapping.
      */
-    public void addGroupToGroupMapping(TGroup fromGroup, TGroup toGroup);
+    public void addGroupToGroupMapping(TGroup fromGroup, TGroup toGroup) throws Exception;
 
     /**
      * Removes the mapping between the specified groups.
@@ -68,7 +68,7 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param fromGroup The 'from' group in the mapping.
      * @param toGroup The 'to' group in the mapping.
      */
-    public void removeGroupToGroupMapping(TGroup fromGroup, TGroup toGroup);
+    public void removeGroupToGroupMapping(TGroup fromGroup, TGroup toGroup) throws Exception;
 
     /**
      * Adds a mapping between the specified user, application component, and level of access to that component.
@@ -77,7 +77,7 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param applicationComponent The application component in the mapping.
      * @param accessLevel The level of access to the component.
      */
-    public void addUserToApplicationComponentAndAccessLevelMapping(TUser user, TComponent applicationComponent, TAccess accessLevel);
+    public void addUserToApplicationComponentAndAccessLevelMapping(TUser user, TComponent applicationComponent, TAccess accessLevel) throws Exception;
 
     /**
      * Removes a mapping between the specified user, application component, and level of access to that component.
@@ -86,7 +86,7 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param applicationComponent The application component in the mapping.
      * @param accessLevel The level of access to the component.
      */
-    public void removeUserToApplicationComponentAndAccessLevelMapping(TUser user, TComponent applicationComponent, TAccess accessLevel);
+    public void removeUserToApplicationComponentAndAccessLevelMapping(TUser user, TComponent applicationComponent, TAccess accessLevel) throws Exception;
 
     /**
      * Adds a mapping between the specified group, application component, and level of access to that component.
@@ -95,7 +95,7 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param applicationComponent The application component in the mapping.
      * @param accessLevel The level of access to the component.
      */
-    public void addGroupToApplicationComponentAndAccessLevelMapping(TGroup group, TComponent applicationComponent, TAccess accessLevel);
+    public void addGroupToApplicationComponentAndAccessLevelMapping(TGroup group, TComponent applicationComponent, TAccess accessLevel) throws Exception;
 
     /**
      * Removes a mapping between the specified group, application component, and level of access to that component.
@@ -104,21 +104,21 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param applicationComponent The application component in the mapping.
      * @param accessLevel The level of access to the component.
      */
-    public void removeGroupToApplicationComponentAndAccessLevelMapping(TGroup group, TComponent applicationComponent, TAccess accessLevel);
+    public void removeGroupToApplicationComponentAndAccessLevelMapping(TGroup group, TComponent applicationComponent, TAccess accessLevel) throws Exception;
 
     /**
      * Adds an entity type.
      * 
      * @param entityType The entity type to add.
      */
-    public void addEntityType(String entityType);
+    public void addEntityType(String entityType) throws Exception;
 
     /**
      * Removes an entity type.
      * 
      * @param entityType The entity type to remove.
      */
-    public void removeEntityType(String entityType);
+    public void removeEntityType(String entityType) throws Exception;
 
     /**
      * Adds an entity.
@@ -126,7 +126,7 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param entityType The type of the entity.
      * @param entity The entity to add.
      */
-    public void addEntity(String entityType, String entity);
+    public void addEntity(String entityType, String entity) throws Exception;
 
     /**
      * Removes an entity.
@@ -134,7 +134,7 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param entityType The type of the entity.
      * @param entity The entity to remove.
      */
-    public void removeEntity(String entityType, String entity);
+    public void removeEntity(String entityType, String entity) throws Exception;
 
     /**
      * Removes a mapping between the specified user, and entity.
@@ -143,7 +143,7 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param entityType The type of the entity.
      * @param entity The entity in the mapping.
      */
-    public void addUserToEntityMapping(TUser user, String entityType, String entity);
+    public void addUserToEntityMapping(TUser user, String entityType, String entity) throws Exception;
 
     /**
      * Removes a mapping between the specified user, and entity.
@@ -152,7 +152,7 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param entityType The type of the entity.
      * @param entity The entity in the mapping.
      */
-    public void removeUserToEntityMapping(TUser user, String entityType, String entity);
+    public void removeUserToEntityMapping(TUser user, String entityType, String entity) throws Exception;
 
     /**
      * Removes a mapping between the specified group, and entity.
@@ -161,7 +161,7 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param entityType The type of the entity.
      * @param entity The entity in the mapping.
      */
-    public void addGroupToEntityMapping(TGroup group, String entityType, String entity);
+    public void addGroupToEntityMapping(TGroup group, String entityType, String entity) throws Exception;
 
     /**
      * Removes a mapping between the specified group, and entity.
@@ -170,5 +170,5 @@ public interface AccessManagerEventProcessor<TUser, TGroup, TComponent, TAccess>
      * @param entityType The type of the entity.
      * @param entity The entity in the mapping.
      */
-    public void removeGroupToEntityMapping(TGroup group, String entityType, String entity);
+    public void removeGroupToEntityMapping(TGroup group, String entityType, String entity) throws Exception;
 }

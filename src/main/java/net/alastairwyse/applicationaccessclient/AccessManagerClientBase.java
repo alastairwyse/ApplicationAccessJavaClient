@@ -59,6 +59,8 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
     protected UniqueStringifier<TComponent> applicationComponentStringifier;
     /** A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances. */
     protected UniqueStringifier<TAccess> accessLevelStringifier;
+    /** HTTP headers to send with each request. */
+    protected Map<String, String> requestHeaders;
     /** Whether the HttpClient member was instantiated within the class constructor */
     protected Boolean httpClientInstantiatedInConstructor;
 
@@ -106,6 +108,30 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         httpClientInstantiatedInConstructor = false;
     }
 
+    /**
+     * Constructs an AccessManagerClientBase.
+     * 
+     * @param httpClient The client to use to connect.
+     * @param baseUrl The base URL for the hosted Web API.
+     * @param userStringifier A string converter for users.  Used to convert strings sent to and received from the web API from/to TUser instances.
+     * @param groupStringifier A string converter for groups.  Used to convert strings sent to and received from the web API from/to TGroup instances.
+     * @param applicationComponentStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param accessLevelStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param requestHeaders HTTP headers to send with each request.
+     */
+    public AccessManagerClientBase(
+        HttpClient httpClient, 
+        URI baseUrl, 
+        UniqueStringifier<TUser> userStringifier, 
+        UniqueStringifier<TGroup> groupStringifier, 
+        UniqueStringifier<TComponent> applicationComponentStringifier, 
+        UniqueStringifier<TAccess> accessLevelStringifier, 
+        Map<String, String> requestHeaders
+    ) {
+        this(httpClient, baseUrl, userStringifier, groupStringifier, applicationComponentStringifier, accessLevelStringifier);
+        this.requestHeaders = requestHeaders;
+    }
+    
     //#region Private/Protected Methods
 
     /**
@@ -163,7 +189,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         if (!((response.statusCode() != 200) || (response.statusCode() != 404))) {
             handleNonSuccessResponseStatus(HttpMethod.GET, requestUrl, response.statusCode(), response.body());
         }
-        if (response.statusCode() == 404) {
+        if (response.statusCode() == 200) {
             returnValue = true;
         }
 
@@ -232,6 +258,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         this.groupStringifier = groupStringifier;
         this.applicationComponentStringifier = applicationComponentStringifier;
         this.accessLevelStringifier = accessLevelStringifier;
+        requestHeaders = new HashMap<String, String>();
     }
 
     /**
@@ -268,8 +295,13 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
     {
         final String acceptHeaderName = "Accept";
         final String acceptHeaderValue = "application/json";
+        Builder returnBuilder = httpRequestBuilder;
 
-        return httpRequestBuilder.setHeader(acceptHeaderName, acceptHeaderValue);
+        for (Map.Entry<String, String> currentHeader : requestHeaders.entrySet()) {
+            returnBuilder = returnBuilder.setHeader(currentHeader.getKey(), currentHeader.getValue());
+        }
+
+        return returnBuilder.setHeader(acceptHeaderName, acceptHeaderValue);
     }
 
     /**
@@ -337,6 +369,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
 
         String baseExceptionMessage = String.format(
             "Failed to call URL '%s' with '%s' method.  Received non-succces HTTP response status %d",
+            requestUrl.toString(), 
             method, 
             responseStatus
         );

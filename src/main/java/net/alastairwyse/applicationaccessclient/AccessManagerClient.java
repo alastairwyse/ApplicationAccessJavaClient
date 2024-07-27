@@ -6,6 +6,7 @@ import java.net.http.HttpClient;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -67,6 +68,29 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     }
 
     /**
+     * Constructs an AccessManagerClient.
+     * 
+     * @param httpClient The client to use to connect.
+     * @param baseUrl The base URL for the hosted Web API.
+     * @param userStringifier A string converter for users.  Used to convert strings sent to and received from the web API from/to TUser instances.
+     * @param groupStringifier A string converter for groups.  Used to convert strings sent to and received from the web API from/to TGroup instances.
+     * @param applicationComponentStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param accessLevelStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param requestHeaders HTTP headers to send with each request.
+     */
+    public AccessManagerClient(
+        HttpClient httpClient, 
+        URI baseUrl, 
+        UniqueStringifier<TUser> userStringifier, 
+        UniqueStringifier<TGroup> groupStringifier, 
+        UniqueStringifier<TComponent> applicationComponentStringifier, 
+        UniqueStringifier<TAccess> accessLevelStringifier, 
+        Map<String, String> requestHeaders
+    ) {
+        super(httpClient, baseUrl, userStringifier, groupStringifier, applicationComponentStringifier, accessLevelStringifier, requestHeaders);
+    }
+    
+    /**
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
@@ -121,39 +145,126 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         return sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void addUser(TUser user) {
-        throw new UnsupportedOperationException();
+    public void addUser(TUser user) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("users/%s", 
+                userStringifier.toString(user)
+            )
+        );
+        sendPostRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public boolean containsUser(TUser user) {
-        throw new UnsupportedOperationException();
+    public boolean containsUser(TUser user) throws IOException, InterruptedException {
+        
+        var url = appendPathToBaseUrl(String.format("users/%s",
+                userStringifier.toString(user)
+            )
+        );
+
+        return sendGetRequestForContainsMethod(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void removeUser(TUser user) {
-        throw new UnsupportedOperationException();
+    public void removeUser(TUser user) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("users/%s", 
+                userStringifier.toString(user)
+            )
+        );
+        sendDeleteRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void addGroup(TGroup group) {
-        throw new UnsupportedOperationException();
+    public void addGroup(TGroup group) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groups/%s", 
+                groupStringifier.toString(group)
+            )
+        );
+        sendPostRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public boolean containsGroup(TGroup group) {
-        throw new UnsupportedOperationException();
+    public boolean containsGroup(TGroup group) throws IOException, InterruptedException {
+        
+        var url = appendPathToBaseUrl(String.format("groups/%s",
+                groupStringifier.toString(group)
+            )
+        );
+
+        return sendGetRequestForContainsMethod(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void removeGroup(TGroup group) {
-        throw new UnsupportedOperationException();
+    public void removeGroup(TGroup group) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groups/%s", 
+                groupStringifier.toString(group)
+            )
+        );
+        sendDeleteRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void addUserToGroupMapping(TUser user, TGroup group) {
-        throw new UnsupportedOperationException();
+    public void addUserToGroupMapping(TUser user, TGroup group) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToGroupMappings/user/%s/group/%s", 
+                userStringifier.toString(user), 
+                groupStringifier.toString(group)
+            )
+        );
+        sendPostRequest(url);
     }
 
     /**
@@ -204,14 +315,40 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void removeUserToGroupMapping(TUser user, TGroup group) {
-        throw new UnsupportedOperationException();
+    public void removeUserToGroupMapping(TUser user, TGroup group) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToGroupMappings/user/%s/group/%s", 
+                userStringifier.toString(user), 
+                groupStringifier.toString(group)
+            )
+        );
+        sendDeleteRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void addGroupToGroupMapping(TGroup fromGroup, TGroup toGroup) {
-        throw new UnsupportedOperationException();
+    public void addGroupToGroupMapping(TGroup fromGroup, TGroup toGroup) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToGroupMappings/fromGroup/%s/toGroup/%s", 
+                groupStringifier.toString(fromGroup), 
+                groupStringifier.toString(toGroup)
+            )
+        );
+        sendPostRequest(url);
     }
 
     /**
@@ -262,14 +399,41 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void removeGroupToGroupMapping(TGroup fromGroup, TGroup toGroup) {
-        throw new UnsupportedOperationException();
+    public void removeGroupToGroupMapping(TGroup fromGroup, TGroup toGroup) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToGroupMappings/fromGroup/%s/toGroup/%s", 
+                groupStringifier.toString(fromGroup), 
+                groupStringifier.toString(toGroup)
+            )
+        );
+        sendDeleteRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void addUserToApplicationComponentAndAccessLevelMapping(TUser user, TComponent applicationComponent, TAccess accessLevel) {
-        throw new UnsupportedOperationException();
+    public void addUserToApplicationComponentAndAccessLevelMapping(TUser user, TComponent applicationComponent, TAccess accessLevel) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToApplicationComponentAndAccessLevelMappings/user/%s/applicationComponent/%s/accessLevel/%s", 
+                userStringifier.toString(user), 
+                applicationComponentStringifier.toString(applicationComponent), 
+                accessLevelStringifier.toString(accessLevel)
+            )
+        );
+        sendPostRequest(url);
     }
 
     /**
@@ -323,14 +487,42 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void removeUserToApplicationComponentAndAccessLevelMapping(TUser user, TComponent applicationComponent, TAccess accessLevel) {
-        throw new UnsupportedOperationException();
+    public void removeUserToApplicationComponentAndAccessLevelMapping(TUser user, TComponent applicationComponent, TAccess accessLevel) throws IOException, InterruptedException {
+        
+        var url = appendPathToBaseUrl(String.format("userToApplicationComponentAndAccessLevelMappings/user/%s/applicationComponent/%s/accessLevel/%s", 
+                userStringifier.toString(user), 
+                applicationComponentStringifier.toString(applicationComponent), 
+                accessLevelStringifier.toString(accessLevel)
+            )
+        );
+        sendDeleteRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void addGroupToApplicationComponentAndAccessLevelMapping(TGroup group, TComponent applicationComponent, TAccess accessLevel) {
-        throw new UnsupportedOperationException();
+    public void addGroupToApplicationComponentAndAccessLevelMapping(TGroup group, TComponent applicationComponent, TAccess accessLevel) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToApplicationComponentAndAccessLevelMappings/group/%s/applicationComponent/%s/accessLevel/%s", 
+                groupStringifier.toString(group), 
+                applicationComponentStringifier.toString(applicationComponent), 
+                accessLevelStringifier.toString(accessLevel)
+            )
+        );
+        sendPostRequest(url);
     }
 
     /**
@@ -384,29 +576,83 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void removeGroupToApplicationComponentAndAccessLevelMapping(TGroup group, TComponent applicationComponent, TAccess accessLevel) {
-        throw new UnsupportedOperationException();
+    public void removeGroupToApplicationComponentAndAccessLevelMapping(TGroup group, TComponent applicationComponent, TAccess accessLevel) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToApplicationComponentAndAccessLevelMappings/group/%s/applicationComponent/%s/accessLevel/%s", 
+                groupStringifier.toString(group), 
+                applicationComponentStringifier.toString(applicationComponent), 
+                accessLevelStringifier.toString(accessLevel)
+            )
+        );
+        sendDeleteRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void addEntityType(String entityType) {
-        throw new UnsupportedOperationException();
+    public void addEntityType(String entityType) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("entityTypes/%s", entityType));
+        sendPostRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public boolean containsEntityType(String entityType) {
-        throw new UnsupportedOperationException();
+    public boolean containsEntityType(String entityType) throws IOException, InterruptedException {
+        
+        var url = appendPathToBaseUrl(String.format("entityTypes/%s",
+                entityType
+            )
+        );
+
+        return sendGetRequestForContainsMethod(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void removeEntityType(String entityType) {
-        throw new UnsupportedOperationException();
+    public void removeEntityType(String entityType) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("entityTypes/%s", entityType));
+        sendDeleteRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void addEntity(String entityType, String entity) {
-        throw new UnsupportedOperationException();
+    public void addEntity(String entityType, String entity) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("entityTypes/%s/entities/%s", entityType, entity));
+        sendPostRequest(url);
     }
 
     /**
@@ -424,19 +670,56 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         return sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public boolean containsEntity(String entityType, String entity) {
-        throw new UnsupportedOperationException();
+    public boolean containsEntity(String entityType, String entity) throws IOException, InterruptedException {
+        
+        var url = appendPathToBaseUrl(String.format("entityTypes/%s/entities/%s",
+                entityType, 
+                entity
+            )
+        );
+
+        return sendGetRequestForContainsMethod(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void removeEntity(String entityType, String entity) {
-        throw new UnsupportedOperationException();
+    public void removeEntity(String entityType, String entity) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("entityTypes/%s/entities/%s", entityType, entity));
+        sendDeleteRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void addUserToEntityMapping(TUser user, String entityType, String entity) {
-        throw new UnsupportedOperationException();
+    public void addUserToEntityMapping(TUser user, String entityType, String entity) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToEntityMappings/user/%s/entityType/%s/entity/%s", 
+                userStringifier.toString(user), 
+                entityType, 
+                entity
+            )
+        );
+        sendPostRequest(url);
     }
 
     /**
@@ -509,14 +792,42 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void removeUserToEntityMapping(TUser user, String entityType, String entity) {
-        throw new UnsupportedOperationException();
+    public void removeUserToEntityMapping(TUser user, String entityType, String entity) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("userToEntityMappings/user/%s/entityType/%s/entity/%s", 
+                userStringifier.toString(user), 
+                entityType, 
+                entity
+            )
+        );
+        sendDeleteRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void addGroupToEntityMapping(TGroup group, String entityType, String entity) {
-        throw new UnsupportedOperationException();
+    public void addGroupToEntityMapping(TGroup group, String entityType, String entity) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToEntityMappings/group/%s/entityType/%s/entity/%s", 
+                groupStringifier.toString(group), 
+                entityType, 
+                entity
+            )
+        );
+        sendPostRequest(url);
     }
 
     /**
@@ -589,19 +900,65 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
         return results;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public void removeGroupToEntityMapping(TGroup group, String entityType, String entity) {
-        throw new UnsupportedOperationException();
+    public void removeGroupToEntityMapping(TGroup group, String entityType, String entity) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("groupToEntityMappings/group/%s/entityType/%s/entity/%s", 
+                groupStringifier.toString(group), 
+                entityType, 
+                entity
+            )
+        );
+        sendDeleteRequest(url);
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public boolean hasAccessToApplicationComponent(TUser user, TComponent applicationComponent, TAccess accessLevel) {
-        throw new UnsupportedOperationException();
+    public boolean hasAccessToApplicationComponent(TUser user, TComponent applicationComponent, TAccess accessLevel) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("dataElementAccess/applicationComponent/user/%s/applicationComponent/%s/accessLevel/%s",
+                userStringifier.toString(user), 
+                applicationComponentStringifier.toString(applicationComponent), 
+                accessLevelStringifier.toString(accessLevel)
+            )
+        );
+        Boolean result = sendGetRequest(url, new TypeReference<Boolean>(){});
+
+        return result;
     }
 
+    /**
+     * @inheritDoc
+     * @exception RuntimeException If a non-success response status was received.
+     * @exception RuntimeException If the response could not be deserialized to an object.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception InterruptedException If the operation is interrupted.
+     */
     @Override
-    public boolean hasAccessToEntity(TUser user, String entityType, String entity) {
-        throw new UnsupportedOperationException();
+    public boolean hasAccessToEntity(TUser user, String entityType, String entity) throws IOException, InterruptedException {
+
+        var url = appendPathToBaseUrl(String.format("dataElementAccess/entity/user/%s/entityType/%s/entity/%s",
+                userStringifier.toString(user), 
+                entityType, 
+                entity
+            )
+        );
+        Boolean result = sendGetRequest(url, new TypeReference<Boolean>(){});
+
+        return result;
     }
 
     /**
