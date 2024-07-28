@@ -35,11 +35,7 @@ import net.alastairwyse.applicationaccessclient.HttpMethod;;
 public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess> implements AutoCloseable {
     
     // TODO:
-    //   Params
-    //   Timeout?
-    //   Headers
-    //   Proxy setting
-    //   Cert
+    //   Force format as UTF-8
 
     /** The client to use to connect. */
     protected HttpClient httpClient;

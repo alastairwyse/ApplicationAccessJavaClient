@@ -13,6 +13,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import net.alastairwyse.applicationaccessclient.models.ApplicationComponentAndAccessLevel;
 import net.alastairwyse.applicationaccessclient.models.EntityTypeAndEntity;
+import net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndGroup;
+import net.alastairwyse.applicationaccessclient.models.datatransferobjects.FromGroupAndToGroup;
 
 /**
  * Client class which interfaces to an AccessManager instance hosted as a REST web API.
@@ -282,10 +284,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 includeIndirectMappings
             )
         );
-        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        ArrayList<UserAndGroup> rawResults = sendGetRequest(url, new TypeReference<ArrayList<UserAndGroup>>(){});
         var results = new ArrayList<TGroup>();
-        for (String currentRawResult : rawResults) {
-            results.add(groupStringifier.fromString(currentRawResult));
+        for (UserAndGroup currentRawResult : rawResults) {
+            results.add(groupStringifier.fromString(currentRawResult.Group));
         }
 
         return results;
@@ -306,10 +308,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 includeIndirectMappings
             )
         );
-        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        ArrayList<UserAndGroup> rawResults = sendGetRequest(url, new TypeReference<ArrayList<UserAndGroup>>(){});
         var results = new ArrayList<TUser>();
-        for (String currentRawResult : rawResults) {
-            results.add(userStringifier.fromString(currentRawResult));
+        for (UserAndGroup currentRawResult : rawResults) {
+            results.add(userStringifier.fromString(currentRawResult.User));
         }
 
         return results;
@@ -366,10 +368,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 includeIndirectMappings
             )
         );
-        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        ArrayList<FromGroupAndToGroup> rawResults = sendGetRequest(url, new TypeReference<ArrayList<FromGroupAndToGroup>>(){});
         var results = new ArrayList<TGroup>();
-        for (String currentRawResult : rawResults) {
-            results.add(groupStringifier.fromString(currentRawResult));
+        for (FromGroupAndToGroup currentRawResult : rawResults) {
+            results.add(groupStringifier.fromString(currentRawResult.ToGroup));
         }
 
         return results;
@@ -390,10 +392,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 includeIndirectMappings
             )
         );
-        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        ArrayList<FromGroupAndToGroup> rawResults = sendGetRequest(url, new TypeReference<ArrayList<FromGroupAndToGroup>>(){});
         var results = new ArrayList<TGroup>();
-        for (String currentRawResult : rawResults) {
-            results.add(groupStringifier.fromString(currentRawResult));
+        for (FromGroupAndToGroup currentRawResult : rawResults) {
+            results.add(groupStringifier.fromString(currentRawResult.FromGroup));
         }
 
         return results;
@@ -450,7 +452,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 userStringifier.toString(user)
             )
         );
-        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndApplicationComponentAndAccessLevel>>(){});
         var results = new ArrayList<ApplicationComponentAndAccessLevel<TComponent, TAccess>>();
         for (var currentRawResult : rawResults) {
             results.add(new ApplicationComponentAndAccessLevel<TComponent,TAccess>(
@@ -478,10 +480,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 includeIndirectMappings
             )
         );
-        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndApplicationComponentAndAccessLevel>>(){});
         var results = new ArrayList<TUser>();
-        for (String currentRawResult : rawResults) {
-            results.add(userStringifier.fromString(currentRawResult));
+        for (var currentRawResult : rawResults) {
+            results.add(userStringifier.fromString(currentRawResult.User));
         }
 
         return results;
@@ -539,7 +541,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 groupStringifier.toString(group)
             )
         );
-        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndApplicationComponentAndAccessLevel>>(){});
         var results = new ArrayList<ApplicationComponentAndAccessLevel<TComponent, TAccess>>();
         for (var currentRawResult : rawResults) {
             results.add(new ApplicationComponentAndAccessLevel<TComponent,TAccess>(
@@ -567,10 +569,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 includeIndirectMappings
             )
         );
-        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndApplicationComponentAndAccessLevel>>(){});
         var results = new ArrayList<TGroup>();
-        for (String currentRawResult : rawResults) {
-            results.add(groupStringifier.fromString(currentRawResult));
+        for (var currentRawResult : rawResults) {
+            results.add(groupStringifier.fromString(currentRawResult.Group));
         }
 
         return results;
@@ -666,8 +668,13 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<String> getEntities(String entityType) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("entityTypes/%s/entities", entityType));
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity>>(){});
+        var results = new ArrayList<String>();
+        for (var currentRawResult : rawResults) {
+            results.add(currentRawResult.Entity);
+        }
 
-        return sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        return results;
     }
 
     /**
@@ -736,7 +743,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 userStringifier.toString(user)
             )
         );
-        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity>>(){});
         var results = new ArrayList<EntityTypeAndEntity>();
         for (var currentRawResult : rawResults) {
             results.add(new EntityTypeAndEntity(
@@ -763,8 +770,13 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 entityType
             )
         );
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity>>(){});
+        var results = new ArrayList<String>();
+        for (var currentRawResult : rawResults) {
+            results.add(currentRawResult.Entity);
+        }
 
-        return sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        return results;
     }
 
     /**
@@ -783,10 +795,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 includeIndirectMappings
             )
         );
-        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity>>(){});
         var results = new ArrayList<TUser>();
-        for (String currentRawResult : rawResults) {
-            results.add(userStringifier.fromString(currentRawResult));
+        for (var currentRawResult : rawResults) {
+            results.add(userStringifier.fromString(currentRawResult.User));
         }
 
         return results;
@@ -844,7 +856,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 groupStringifier.toString(group)
             )
         );
-        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity>>(){});
         var results = new ArrayList<EntityTypeAndEntity>();
         for (var currentRawResult : rawResults) {
             results.add(new EntityTypeAndEntity(
@@ -871,8 +883,13 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 entityType
             )
         );
-        
-        return sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity>>(){});
+        var results = new ArrayList<String>();
+        for (var currentRawResult : rawResults) {
+            results.add(currentRawResult.Entity);
+        }
+
+        return results;
     }
 
     /**
@@ -891,10 +908,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 includeIndirectMappings
             )
         );
-        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity>>(){});
         var results = new ArrayList<TGroup>();
-        for (String currentRawResult : rawResults) {
-            results.add(groupStringifier.fromString(currentRawResult));
+        for (var currentRawResult : rawResults) {
+            results.add(groupStringifier.fromString(currentRawResult.Group));
         }
 
         return results;
@@ -975,7 +992,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 userStringifier.toString(user)
             )
         );
-        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndApplicationComponentAndAccessLevel>>(){});
         var results = new HashSet<ApplicationComponentAndAccessLevel<TComponent, TAccess>>();
         for (var currentRawResult : rawResults) {
             results.add(new ApplicationComponentAndAccessLevel<TComponent,TAccess>(
@@ -1001,7 +1018,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 groupStringifier.toString(group)
             )
         );
-        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.ApplicationComponentAndAccessLevel>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndApplicationComponentAndAccessLevel>>(){});
         var results = new HashSet<ApplicationComponentAndAccessLevel<TComponent, TAccess>>();
         for (var currentRawResult : rawResults) {
             results.add(new ApplicationComponentAndAccessLevel<TComponent,TAccess>(
@@ -1027,7 +1044,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 userStringifier.toString(user)
             )
         );
-        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity>>(){});
         var results = new HashSet<EntityTypeAndEntity>();
         for (var currentRawResult : rawResults) {
             results.add(new EntityTypeAndEntity(
@@ -1054,10 +1071,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 entityType
             )
         );
-        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity>>(){});
         var results = new HashSet<String>();
-        for (String currentRawResult : rawResults) {
-            results.add(currentRawResult);
+        for (var currentRawResult : rawResults) {
+            results.add(currentRawResult.Entity);
         }
 
         return results;
@@ -1077,7 +1094,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 groupStringifier.toString(group)
             )
         );
-        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity>>(){});
         var results = new HashSet<EntityTypeAndEntity>();
         for (var currentRawResult : rawResults) {
             results.add(new EntityTypeAndEntity(
@@ -1104,10 +1121,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
                 entityType
             )
         );
-        ArrayList<String> rawResults = sendGetRequest(url, new TypeReference<ArrayList<String>>(){});
+        ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity>>(){});
         var results = new HashSet<String>();
-        for (String currentRawResult : rawResults) {
-            results.add(currentRawResult);
+        for (var currentRawResult : rawResults) {
+            results.add(currentRawResult.Entity);
         }
 
         return results;
