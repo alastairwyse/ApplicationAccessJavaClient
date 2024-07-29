@@ -9,12 +9,13 @@ import net.alastairwyse.applicationaccessclient.models.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order; 
 import org.junit.jupiter.api.TestMethodOrder;
-
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -152,6 +153,16 @@ public class AccessManagerClientIntegrationTests {
         );
     }
 
+    @After
+    public void tearDown() {
+        try {
+            testAccessManagerClient.close();
+        }
+        catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
     @Test
     @Order(1) 
     public void gettersOnEmptyAccessManager() {
@@ -172,7 +183,7 @@ public class AccessManagerClientIntegrationTests {
     }
 
     @Test
-    @Order(2) 
+    @Order(3) 
     public void addElementsAndMappings() {
 
         // Add all elements and mappings
@@ -299,7 +310,7 @@ public class AccessManagerClientIntegrationTests {
     }
 
     @Test
-    @Order(3) 
+    @Order(4) 
     public void queries() {
 
         // Test get*() methods

@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
+import java.nio.charset.Charset;
 import java.util.function.Consumer;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,6 @@ import net.alastairwyse.applicationaccessclient.exceptions.DeserializationExcept
 import net.alastairwyse.applicationaccessclient.exceptions.ElementNotFoundException;
 import net.alastairwyse.applicationaccessclient.exceptions.NotFoundException;
 import net.alastairwyse.applicationaccessclient.models.HttpErrorResponse;
-import net.alastairwyse.applicationaccessclient.HttpMethod;;
 
 /**
  * Base for client classes which interface to AccessManager instances hosted as REST web APIs.
@@ -34,9 +34,6 @@ import net.alastairwyse.applicationaccessclient.HttpMethod;;
  */
 public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess> implements AutoCloseable {
     
-    // TODO:
-    //   Force format as UTF-8
-
     /** The client to use to connect. */
     protected HttpClient httpClient;
     /** The base URL for the hosted Web API. */
@@ -55,6 +52,8 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
     protected UniqueStringifier<TComponent> applicationComponentStringifier;
     /** A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances. */
     protected UniqueStringifier<TAccess> accessLevelStringifier;
+    /** The character encoding used when interpreting/reading HTTP responses. */
+    protected Charset defaultCharset;
     /** HTTP headers to send with each request. */
     protected Map<String, String> requestHeaders;
     /** Whether the HttpClient member was instantiated within the class constructor */
@@ -147,7 +146,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
 
         Builder requestBuilder = HttpRequest.newBuilder(requestUrl).GET();
         setHttpRequestAcceptHeader(requestBuilder);
-        HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString(defaultCharset));
         if (response.statusCode() != 200) {
             handleNonSuccessResponseStatus(HttpMethod.GET, requestUrl, response.statusCode(), response.body());
         }
@@ -181,7 +180,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         boolean returnValue = false;
         Builder requestBuilder = HttpRequest.newBuilder(requestUrl).GET();
         setHttpRequestAcceptHeader(requestBuilder);
-        HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString(defaultCharset));
         if (!((response.statusCode() != 200) || (response.statusCode() != 404))) {
             handleNonSuccessResponseStatus(HttpMethod.GET, requestUrl, response.statusCode(), response.body());
         }
@@ -205,7 +204,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
 
         Builder requestBuilder = HttpRequest.newBuilder(requestUrl).POST(HttpRequest.BodyPublishers.noBody());
         setHttpRequestAcceptHeader(requestBuilder);
-        HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString(defaultCharset));
         if (response.statusCode() != 201) {
             handleNonSuccessResponseStatus(HttpMethod.POST, requestUrl, response.statusCode(), response.body());
         }
@@ -224,7 +223,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
 
         Builder requestBuilder = HttpRequest.newBuilder(requestUrl).DELETE();
         setHttpRequestAcceptHeader(requestBuilder);
-        HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString(defaultCharset));
         if (response.statusCode() != 200) {
             handleNonSuccessResponseStatus(HttpMethod.DELETE, requestUrl, response.statusCode(), response.body());
         }
@@ -254,6 +253,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         this.groupStringifier = groupStringifier;
         this.applicationComponentStringifier = applicationComponentStringifier;
         this.accessLevelStringifier = accessLevelStringifier;
+        defaultCharset = Charset.forName("UTF-8");
         requestHeaders = new HashMap<String, String>();
     }
 
@@ -327,19 +327,19 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
             Integer.valueOf(404), // Not Found
             (HttpErrorResponse httpErrorResponse) -> {  
 
-                if (httpErrorResponse.getCode() == "UserNotFoundException") {
+                if (httpErrorResponse.getCode().equals("UserNotFoundException")) {
                     String user = getHttpErrorResponseAttributeValue(httpErrorResponse, "User");
                     throw new ElementNotFoundException(httpErrorResponse.getMessage(), "User", user);
                 }
-                else if (httpErrorResponse.getCode() == "GroupNotFoundException") {
+                else if (httpErrorResponse.getCode().equals("GroupNotFoundException")) {
                     String group = getHttpErrorResponseAttributeValue(httpErrorResponse, "Group");
                     throw new ElementNotFoundException(httpErrorResponse.getMessage(), "Group", group);
                 }
-                else if (httpErrorResponse.getCode() == "EntityTypeNotFoundException") {
+                else if (httpErrorResponse.getCode().equals("EntityTypeNotFoundException")) {
                     String entityType = getHttpErrorResponseAttributeValue(httpErrorResponse, "EntityType");
                     throw new ElementNotFoundException(httpErrorResponse.getMessage(), "EntityType", entityType);
                 }
-                else if (httpErrorResponse.getCode() == "EntityNotFoundException") {
+                else if (httpErrorResponse.getCode().equals("EntityNotFoundException")) {
                     String entity = getHttpErrorResponseAttributeValue(httpErrorResponse, "Entity");
                     throw new ElementNotFoundException(httpErrorResponse.getMessage(), "Entity", entity);
                 }
