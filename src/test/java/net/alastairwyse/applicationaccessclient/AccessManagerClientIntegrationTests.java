@@ -1,5 +1,6 @@
 package net.alastairwyse.applicationaccessclient;
 
+import java.net.ConnectException;
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
@@ -11,10 +12,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order; 
 import org.junit.jupiter.api.TestMethodOrder;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +28,8 @@ import org.junit.Test;
 @TestMethodOrder(OrderAnnotation.class)
 public class AccessManagerClientIntegrationTests {
     
+    private final String URL_RESERVED_CHARACTERS = "! * ' ( ) ; : @ & = + $ , / ? % # [ ]";
+
     // Entity string constants
     private final String CLIENT_ACCOUNTS = "ClientAccount";
     private final String COMPANY_1 = "Company1";
@@ -60,9 +65,9 @@ public class AccessManagerClientIntegrationTests {
     @Before
     public void setUp() {
 
-        URI serveUri = null;
+        URI serverUri = null;
         try {
-            serveUri = new URI(serverUrl);
+            serverUri = new URI(serverUrl);
         }
         catch (Exception e) {
             throw new RuntimeException(String.format("Failed to create URI from string '%s'.", serverUrl), e);
@@ -85,7 +90,7 @@ public class AccessManagerClientIntegrationTests {
                     case REVIEW:
                         return "Review";
                     default:
-                        throw new RuntimeException(String.format("Unhandled ApplicationScreen screen value '%s'.", inputObject));
+                        throw new RuntimeException(String.format("Unhandled ApplicationScreen value '%s'.", inputObject));
                   }
             }
 
@@ -145,7 +150,7 @@ public class AccessManagerClientIntegrationTests {
         };
 
         testAccessManagerClient = new AccessManagerClient<String, String, ApplicationScreen, AccessLevel>(
-            serveUri, 
+            serverUri, 
             new StringUniqueStringifier(), 
             new StringUniqueStringifier(), 
             componentStringifier, 
@@ -165,6 +170,68 @@ public class AccessManagerClientIntegrationTests {
 
     @Test
     @Order(1) 
+    public void connectionExceptionTests() {
+
+        URI closedPortUrl = null;
+        try {
+            closedPortUrl = new URI("http://127.0.0.1:100/");
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Failed to create URI from string 'http://127.0.0.1:100/'.", e);
+        }
+
+        try (
+            AccessManagerClient<String, String, ApplicationScreen, AccessLevel> exceptionAccessManagerClient = new AccessManagerClient<String, String, ApplicationScreen, AccessLevel>(
+                closedPortUrl, 
+                new StringUniqueStringifier(), 
+                new StringUniqueStringifier(), 
+                componentStringifier, 
+                accessLevelStringifier
+            );
+        ) {
+            ConnectException e = assertThrows(ConnectException.class, () -> {
+                exceptionAccessManagerClient.getUsers();
+            });
+
+            
+            e = assertThrows(ConnectException.class, () -> {
+                exceptionAccessManagerClient.containsUser("user1");
+            });
+
+            
+            e = assertThrows(ConnectException.class, () -> {
+                exceptionAccessManagerClient.addUser("user1");
+            });
+
+            
+            e = assertThrows(ConnectException.class, () -> {
+                exceptionAccessManagerClient.removeUser("user1");
+            });
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Failed to test exceptions.", e);
+        }
+    }
+
+    @Test
+    @Order(2) 
+    public void urlReservedCharacters() {
+
+        try {
+            testAccessManagerClient.addUser(URL_RESERVED_CHARACTERS);
+
+            boolean containsResult = testAccessManagerClient.containsUser(URL_RESERVED_CHARACTERS);
+            assertTrue(containsResult);
+
+            testAccessManagerClient.addUser(URL_RESERVED_CHARACTERS);
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Failed to test url reserved characters.", e);
+        }
+    }
+
+    @Test
+    @Order(3) 
     public void gettersOnEmptyAccessManager() {
         
         try {
@@ -178,12 +245,12 @@ public class AccessManagerClientIntegrationTests {
             assertEquals(0, allEntityTypes.size());
         }
         catch (Exception e) {
-            throw new RuntimeException("Failed create elements.", e);
+            throw new RuntimeException("Failed to test empty element getters.", e);
         }
     }
 
     @Test
-    @Order(3) 
+    @Order(4) 
     public void addElementsAndMappings() {
 
         // Add all elements and mappings
@@ -310,7 +377,7 @@ public class AccessManagerClientIntegrationTests {
     }
 
     @Test
-    @Order(4) 
+    @Order(5) 
     public void queries() {
 
         // Test get*() methods
