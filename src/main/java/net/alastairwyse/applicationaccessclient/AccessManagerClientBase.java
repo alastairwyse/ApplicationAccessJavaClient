@@ -7,7 +7,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.Builder;
 import java.net.http.HttpResponse;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
 import java.util.HashMap;
 import java.util.Map;
@@ -245,7 +247,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         UniqueStringifier<TComponent> applicationComponentStringifier, 
         UniqueStringifier<TAccess> accessLevelStringifier
     ) {
-        initializeBaseUrk(baseUrl);
+        initializeBaseUrl(baseUrl);
         errorResponseDeserializer = new HttpErrorResponseJsonSerializer();
         initializeStatusCodeToExceptionThrowingActionMap();
         objectMapper = new ObjectMapper();
@@ -253,7 +255,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         this.groupStringifier = groupStringifier;
         this.applicationComponentStringifier = applicationComponentStringifier;
         this.accessLevelStringifier = accessLevelStringifier;
-        defaultCharset = Charset.forName("UTF-8");
+        defaultCharset = Charset.forName(StandardCharsets.UTF_8.toString());
         requestHeaders = new HashMap<String, String>();
     }
 
@@ -261,7 +263,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
      * Adds an appropriate path suffix to the specified 'baseUrl' constructor parameter.
      * @param baseUrl The base URL to initialize.
      */
-    protected void initializeBaseUrk(URI baseUrl) {
+    protected void initializeBaseUrl(URI baseUrl) {
         
         try {
             this.baseUrl = new URI(baseUrl.toString() + "api/v1/");
@@ -298,6 +300,16 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         }
 
         return returnBuilder.setHeader(acceptHeaderName, acceptHeaderValue);
+    }
+
+    /**
+     * Encodes the specified string for use in a URL.
+     * 
+     * @param elementValue The string to encode.
+     * @return The encoded string.
+     */
+    protected String encodeUrlComponent(String component) {
+        return URLEncoder.encode(component, defaultCharset).replace("+", "%20");
     }
 
     /**

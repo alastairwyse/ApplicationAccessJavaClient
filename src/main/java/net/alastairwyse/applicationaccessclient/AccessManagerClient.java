@@ -158,7 +158,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void addUser(TUser user) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("users/%s", 
-                userStringifier.toString(user)
+                encodeUrlComponent(userStringifier.toString(user)) 
             )
         );
         sendPostRequest(url);
@@ -175,7 +175,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public boolean containsUser(TUser user) throws IOException, InterruptedException {
         
         var url = appendPathToBaseUrl(String.format("users/%s",
-                userStringifier.toString(user)
+                encodeUrlComponent(userStringifier.toString(user)) 
             )
         );
 
@@ -193,7 +193,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void removeUser(TUser user) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("users/%s", 
-                userStringifier.toString(user)
+                encodeUrlComponent(userStringifier.toString(user))
             )
         );
         sendDeleteRequest(url);
@@ -210,7 +210,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void addGroup(TGroup group) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groups/%s", 
-                groupStringifier.toString(group)
+                encodeUrlComponent(groupStringifier.toString(group))
             )
         );
         sendPostRequest(url);
@@ -227,7 +227,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public boolean containsGroup(TGroup group) throws IOException, InterruptedException {
         
         var url = appendPathToBaseUrl(String.format("groups/%s",
-                groupStringifier.toString(group)
+                encodeUrlComponent(groupStringifier.toString(group))
             )
         );
 
@@ -245,7 +245,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void removeGroup(TGroup group) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groups/%s", 
-                groupStringifier.toString(group)
+                encodeUrlComponent(groupStringifier.toString(group))
             )
         );
         sendDeleteRequest(url);
@@ -262,8 +262,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void addUserToGroupMapping(TUser user, TGroup group) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToGroupMappings/user/%s/group/%s", 
-                userStringifier.toString(user), 
-                groupStringifier.toString(group)
+            encodeUrlComponent(userStringifier.toString(user)), 
+            encodeUrlComponent(groupStringifier.toString(group))
             )
         );
         sendPostRequest(url);
@@ -328,8 +328,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void removeUserToGroupMapping(TUser user, TGroup group) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToGroupMappings/user/%s/group/%s", 
-                userStringifier.toString(user), 
-                groupStringifier.toString(group)
+                encodeUrlComponent(userStringifier.toString(user)), 
+                encodeUrlComponent(groupStringifier.toString(group))
             )
         );
         sendDeleteRequest(url);
@@ -346,8 +346,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void addGroupToGroupMapping(TGroup fromGroup, TGroup toGroup) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToGroupMappings/fromGroup/%s/toGroup/%s", 
-                groupStringifier.toString(fromGroup), 
-                groupStringifier.toString(toGroup)
+                encodeUrlComponent(groupStringifier.toString(fromGroup)), 
+                encodeUrlComponent(groupStringifier.toString(toGroup))
             )
         );
         sendPostRequest(url);
@@ -412,8 +412,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void removeGroupToGroupMapping(TGroup fromGroup, TGroup toGroup) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToGroupMappings/fromGroup/%s/toGroup/%s", 
-                groupStringifier.toString(fromGroup), 
-                groupStringifier.toString(toGroup)
+                encodeUrlComponent(groupStringifier.toString(fromGroup)), 
+                encodeUrlComponent(groupStringifier.toString(toGroup))
             )
         );
         sendDeleteRequest(url);
@@ -430,9 +430,9 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void addUserToApplicationComponentAndAccessLevelMapping(TUser user, TComponent applicationComponent, TAccess accessLevel) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToApplicationComponentAndAccessLevelMappings/user/%s/applicationComponent/%s/accessLevel/%s", 
-                userStringifier.toString(user), 
-                applicationComponentStringifier.toString(applicationComponent), 
-                accessLevelStringifier.toString(accessLevel)
+                encodeUrlComponent(userStringifier.toString(user)), 
+                encodeUrlComponent(applicationComponentStringifier.toString(applicationComponent)), 
+                encodeUrlComponent(accessLevelStringifier.toString(accessLevel))
             )
         );
         sendPostRequest(url);
@@ -500,9 +500,9 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void removeUserToApplicationComponentAndAccessLevelMapping(TUser user, TComponent applicationComponent, TAccess accessLevel) throws IOException, InterruptedException {
         
         var url = appendPathToBaseUrl(String.format("userToApplicationComponentAndAccessLevelMappings/user/%s/applicationComponent/%s/accessLevel/%s", 
-                userStringifier.toString(user), 
-                applicationComponentStringifier.toString(applicationComponent), 
-                accessLevelStringifier.toString(accessLevel)
+                encodeUrlComponent(userStringifier.toString(user)), 
+                encodeUrlComponent(applicationComponentStringifier.toString(applicationComponent)), 
+                encodeUrlComponent(accessLevelStringifier.toString(accessLevel))
             )
         );
         sendDeleteRequest(url);
@@ -519,9 +519,9 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void addGroupToApplicationComponentAndAccessLevelMapping(TGroup group, TComponent applicationComponent, TAccess accessLevel) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToApplicationComponentAndAccessLevelMappings/group/%s/applicationComponent/%s/accessLevel/%s", 
-                groupStringifier.toString(group), 
-                applicationComponentStringifier.toString(applicationComponent), 
-                accessLevelStringifier.toString(accessLevel)
+                encodeUrlComponent(groupStringifier.toString(group)), 
+                encodeUrlComponent(applicationComponentStringifier.toString(applicationComponent)), 
+                encodeUrlComponent(accessLevelStringifier.toString(accessLevel))
             )
         );
         sendPostRequest(url);
@@ -589,9 +589,9 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void removeGroupToApplicationComponentAndAccessLevelMapping(TGroup group, TComponent applicationComponent, TAccess accessLevel) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToApplicationComponentAndAccessLevelMappings/group/%s/applicationComponent/%s/accessLevel/%s", 
-                groupStringifier.toString(group), 
-                applicationComponentStringifier.toString(applicationComponent), 
-                accessLevelStringifier.toString(accessLevel)
+                encodeUrlComponent(groupStringifier.toString(group)), 
+                encodeUrlComponent(applicationComponentStringifier.toString(applicationComponent)), 
+                encodeUrlComponent(accessLevelStringifier.toString(accessLevel))
             )
         );
         sendDeleteRequest(url);
@@ -607,7 +607,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     @Override
     public void addEntityType(String entityType) throws IOException, InterruptedException {
 
-        var url = appendPathToBaseUrl(String.format("entityTypes/%s", entityType));
+        var url = appendPathToBaseUrl(String.format("entityTypes/%s", 
+                encodeUrlComponent(entityType)
+            )
+        );
         sendPostRequest(url);
     }
 
@@ -639,7 +642,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     @Override
     public void removeEntityType(String entityType) throws IOException, InterruptedException {
 
-        var url = appendPathToBaseUrl(String.format("entityTypes/%s", entityType));
+        var url = appendPathToBaseUrl(String.format("entityTypes/%s", 
+                encodeUrlComponent(entityType)
+            )
+        );
         sendDeleteRequest(url);
     }
 
@@ -653,7 +659,11 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     @Override
     public void addEntity(String entityType, String entity) throws IOException, InterruptedException {
 
-        var url = appendPathToBaseUrl(String.format("entityTypes/%s/entities/%s", entityType, entity));
+        var url = appendPathToBaseUrl(String.format("entityTypes/%s/entities/%s", 
+                encodeUrlComponent(entityType), 
+                encodeUrlComponent(entity)
+            )
+        );
         sendPostRequest(url);
     }
 
@@ -706,7 +716,11 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     @Override
     public void removeEntity(String entityType, String entity) throws IOException, InterruptedException {
 
-        var url = appendPathToBaseUrl(String.format("entityTypes/%s/entities/%s", entityType, entity));
+        var url = appendPathToBaseUrl(String.format("entityTypes/%s/entities/%s", 
+                encodeUrlComponent(entityType), 
+                encodeUrlComponent(entity)
+            )
+        );
         sendDeleteRequest(url);
     }
 
@@ -721,9 +735,9 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void addUserToEntityMapping(TUser user, String entityType, String entity) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToEntityMappings/user/%s/entityType/%s/entity/%s", 
-                userStringifier.toString(user), 
-                entityType, 
-                entity
+                encodeUrlComponent(userStringifier.toString(user)), 
+                encodeUrlComponent(entityType), 
+                encodeUrlComponent(entity)
             )
         );
         sendPostRequest(url);
@@ -815,9 +829,9 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void removeUserToEntityMapping(TUser user, String entityType, String entity) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToEntityMappings/user/%s/entityType/%s/entity/%s", 
-                userStringifier.toString(user), 
-                entityType, 
-                entity
+                encodeUrlComponent(userStringifier.toString(user)), 
+                encodeUrlComponent(entityType), 
+                encodeUrlComponent(entity)
             )
         );
         sendDeleteRequest(url);
@@ -834,9 +848,9 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void addGroupToEntityMapping(TGroup group, String entityType, String entity) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToEntityMappings/group/%s/entityType/%s/entity/%s", 
-                groupStringifier.toString(group), 
-                entityType, 
-                entity
+                encodeUrlComponent(groupStringifier.toString(group)), 
+                encodeUrlComponent(entityType), 
+                encodeUrlComponent(entity)
             )
         );
         sendPostRequest(url);
@@ -928,9 +942,9 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void removeGroupToEntityMapping(TGroup group, String entityType, String entity) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToEntityMappings/group/%s/entityType/%s/entity/%s", 
-                groupStringifier.toString(group), 
-                entityType, 
-                entity
+                encodeUrlComponent(groupStringifier.toString(group)), 
+                encodeUrlComponent(entityType), 
+                encodeUrlComponent(entity)
             )
         );
         sendDeleteRequest(url);

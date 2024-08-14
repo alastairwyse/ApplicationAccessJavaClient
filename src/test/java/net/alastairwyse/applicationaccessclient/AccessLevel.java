@@ -8,5 +8,6 @@ public enum AccessLevel
     VIEW,
     CREATE,
     MODIFY,
-    DELETE
+    DELETE, 
+    RESERVED_CHARACTERS
 }

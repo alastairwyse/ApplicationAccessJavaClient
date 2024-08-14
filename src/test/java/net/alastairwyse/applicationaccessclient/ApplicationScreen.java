@@ -10,5 +10,6 @@ public enum ApplicationScreen
     MANAGE_PRODUCTS,
     SETTINGS, 
     DELIVERY, 
-    REVIEW
+    REVIEW, 
+    RESERVED_CHARACTERS
 }

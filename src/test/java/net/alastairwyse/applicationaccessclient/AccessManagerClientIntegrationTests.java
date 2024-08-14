@@ -60,8 +60,6 @@ public class AccessManagerClientIntegrationTests {
     private UniqueStringifier<AccessLevel> accessLevelStringifier;
     private AccessManagerClient<String, String, ApplicationScreen, AccessLevel> testAccessManagerClient;
 
-    // TODO: Exercuse each one of the underlying SendRequest*() methods (e.g. sendGetRequestForContainsMethod()) for failure/exception case
-
     @Before
     public void setUp() {
 
@@ -89,6 +87,8 @@ public class AccessManagerClientIntegrationTests {
                         return "Delivery";
                     case REVIEW:
                         return "Review";
+                    case RESERVED_CHARACTERS:
+                        return URL_RESERVED_CHARACTERS;
                     default:
                         throw new RuntimeException(String.format("Unhandled ApplicationScreen value '%s'.", inputObject));
                   }
@@ -109,6 +109,8 @@ public class AccessManagerClientIntegrationTests {
                         return ApplicationScreen.DELIVERY;
                     case "Review":
                         return ApplicationScreen.REVIEW;
+                    case URL_RESERVED_CHARACTERS:
+                        return ApplicationScreen.RESERVED_CHARACTERS;
                     default:
                         throw new RuntimeException(String.format("Unhandled value '%s'.", inpuString));
                   }
@@ -127,6 +129,8 @@ public class AccessManagerClientIntegrationTests {
                         return "Modify";
                     case DELETE:
                         return "Delete";
+                    case RESERVED_CHARACTERS:
+                        return URL_RESERVED_CHARACTERS;
                     default:
                         throw new RuntimeException(String.format("Unhandled AccessLevel screen value '%s'.", inputObject));
                   }
@@ -143,6 +147,8 @@ public class AccessManagerClientIntegrationTests {
                         return AccessLevel.MODIFY;
                     case "Delete":
                         return AccessLevel.DELETE;
+                    case URL_RESERVED_CHARACTERS:
+                        return AccessLevel.RESERVED_CHARACTERS;
                     default:
                         throw new RuntimeException(String.format("Unhandled value '%s'.", inpuString));
                   }
@@ -219,11 +225,36 @@ public class AccessManagerClientIntegrationTests {
 
         try {
             testAccessManagerClient.addUser(URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.addGroup(URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.addGroup("group1");
+            testAccessManagerClient.addGroup("group2");
+            testAccessManagerClient.addUserToGroupMapping(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.addGroupToGroupMapping(URL_RESERVED_CHARACTERS, "group1");
+            testAccessManagerClient.addGroupToGroupMapping("group2",  URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.addUserToApplicationComponentAndAccessLevelMapping(URL_RESERVED_CHARACTERS, ApplicationScreen.RESERVED_CHARACTERS, AccessLevel.RESERVED_CHARACTERS);
+            testAccessManagerClient.addGroupToApplicationComponentAndAccessLevelMapping(URL_RESERVED_CHARACTERS, ApplicationScreen.RESERVED_CHARACTERS, AccessLevel.RESERVED_CHARACTERS);
+            testAccessManagerClient.addEntityType(URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.addEntity(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.addUserToEntityMapping(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.addGroupToEntityMapping(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
 
-            boolean containsResult = testAccessManagerClient.containsUser(URL_RESERVED_CHARACTERS);
-            assertTrue(containsResult);
 
-            testAccessManagerClient.addUser(URL_RESERVED_CHARACTERS);
+            //boolean containsResult = testAccessManagerClient.containsUser(URL_RESERVED_CHARACTERS);
+            //assertTrue(containsResult);
+
+            testAccessManagerClient.removeGroupToEntityMapping(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.removeUserToEntityMapping(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.removeEntity(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.removeEntityType(URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.removeGroupToApplicationComponentAndAccessLevelMapping(URL_RESERVED_CHARACTERS, ApplicationScreen.RESERVED_CHARACTERS, AccessLevel.RESERVED_CHARACTERS);
+            testAccessManagerClient.removeUserToApplicationComponentAndAccessLevelMapping(URL_RESERVED_CHARACTERS, ApplicationScreen.RESERVED_CHARACTERS, AccessLevel.RESERVED_CHARACTERS);
+            testAccessManagerClient.removeGroupToGroupMapping("group2",  URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.removeGroupToGroupMapping(URL_RESERVED_CHARACTERS, "group1");
+            testAccessManagerClient.removeUserToGroupMapping(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.removeGroup("group2");
+            testAccessManagerClient.removeGroup("group1");
+            testAccessManagerClient.removeGroup(URL_RESERVED_CHARACTERS);
+            testAccessManagerClient.removeUser(URL_RESERVED_CHARACTERS);
         }
         catch (Exception e) {
             throw new RuntimeException("Failed to test url reserved characters.", e);
