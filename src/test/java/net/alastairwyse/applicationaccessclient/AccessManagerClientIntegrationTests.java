@@ -195,22 +195,22 @@ public class AccessManagerClientIntegrationTests {
                 accessLevelStringifier
             );
         ) {
-            ConnectException e = assertThrows(ConnectException.class, () -> {
+            ConnectException conEx = assertThrows(ConnectException.class, () -> {
                 exceptionAccessManagerClient.getUsers();
             });
 
             
-            e = assertThrows(ConnectException.class, () -> {
+            conEx = assertThrows(ConnectException.class, () -> {
                 exceptionAccessManagerClient.containsUser("user1");
             });
 
             
-            e = assertThrows(ConnectException.class, () -> {
+            conEx = assertThrows(ConnectException.class, () -> {
                 exceptionAccessManagerClient.addUser("user1");
             });
 
             
-            e = assertThrows(ConnectException.class, () -> {
+            conEx = assertThrows(ConnectException.class, () -> {
                 exceptionAccessManagerClient.removeUser("user1");
             });
         }
@@ -238,9 +238,60 @@ public class AccessManagerClientIntegrationTests {
             testAccessManagerClient.addUserToEntityMapping(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
             testAccessManagerClient.addGroupToEntityMapping(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
 
-
-            //boolean containsResult = testAccessManagerClient.containsUser(URL_RESERVED_CHARACTERS);
-            //assertTrue(containsResult);
+            boolean containsResult = testAccessManagerClient.containsUser(URL_RESERVED_CHARACTERS);
+            assertTrue(containsResult);
+            containsResult = testAccessManagerClient.containsGroup(URL_RESERVED_CHARACTERS);
+            assertTrue(containsResult);
+            List<String> userToGroupMappings = testAccessManagerClient.getUserToGroupMappings(URL_RESERVED_CHARACTERS, false);
+            assertEquals(1, userToGroupMappings.size());
+            List<String> groupToUserMappings = testAccessManagerClient.getGroupToUserMappings(URL_RESERVED_CHARACTERS, false);
+            assertEquals(1, groupToUserMappings.size());
+            List<String> groupToGroupMappings = testAccessManagerClient.getGroupToGroupMappings(URL_RESERVED_CHARACTERS, false);
+            assertEquals(1, groupToGroupMappings.size());
+            List<String> groupToGroupReverseMappings = testAccessManagerClient.getGroupToGroupReverseMappings(URL_RESERVED_CHARACTERS, false);
+            assertEquals(1, groupToGroupReverseMappings.size());
+            List<ApplicationComponentAndAccessLevel<ApplicationScreen, AccessLevel>> userComponentMappings = testAccessManagerClient.getUserToApplicationComponentAndAccessLevelMappings(URL_RESERVED_CHARACTERS);
+            assertEquals(1, userComponentMappings.size());
+            List<String> users = testAccessManagerClient.getApplicationComponentAndAccessLevelToUserMappings(ApplicationScreen.RESERVED_CHARACTERS, AccessLevel.RESERVED_CHARACTERS, false);
+            assertEquals(1, users.size());
+            List<ApplicationComponentAndAccessLevel<ApplicationScreen, AccessLevel>> groupComponentMappings = testAccessManagerClient.getGroupToApplicationComponentAndAccessLevelMappings(URL_RESERVED_CHARACTERS);
+            assertEquals(1, groupComponentMappings.size());
+            List<String> groups = testAccessManagerClient.getApplicationComponentAndAccessLevelToGroupMappings(ApplicationScreen.RESERVED_CHARACTERS, AccessLevel.RESERVED_CHARACTERS, false);
+            assertEquals(1, groups.size());
+            containsResult = testAccessManagerClient.containsEntityType(URL_RESERVED_CHARACTERS);
+            assertTrue(containsResult);
+            List<String> entities = testAccessManagerClient.getEntities(URL_RESERVED_CHARACTERS);
+            assertEquals(1, entities.size());
+            containsResult = testAccessManagerClient.containsEntity(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            assertTrue(containsResult);
+            List<EntityTypeAndEntity> userEntityMappings = testAccessManagerClient.getUserToEntityMappings(URL_RESERVED_CHARACTERS);
+            assertEquals(1, userEntityMappings.size());
+            entities = testAccessManagerClient.getUserToEntityMappings(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            assertEquals(1, entities.size());
+            users = testAccessManagerClient.getEntityToUserMappings(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS, false);
+            assertEquals(1, users.size());
+            List<EntityTypeAndEntity> groupEntityMappings = testAccessManagerClient.getGroupToEntityMappings(URL_RESERVED_CHARACTERS);
+            assertEquals(1, groupEntityMappings.size());
+            entities = testAccessManagerClient.getGroupToEntityMappings(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            assertEquals(1, entities.size());
+            groups = testAccessManagerClient.getEntityToGroupMappings(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS, false);
+            assertEquals(1, groups.size());
+            boolean hasAccessResult = testAccessManagerClient.hasAccessToApplicationComponent(URL_RESERVED_CHARACTERS, ApplicationScreen.RESERVED_CHARACTERS, AccessLevel.RESERVED_CHARACTERS);
+            assertTrue(hasAccessResult);
+            hasAccessResult = testAccessManagerClient.hasAccessToEntity(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            assertTrue(hasAccessResult);
+            Set<ApplicationComponentAndAccessLevel<ApplicationScreen, AccessLevel>> userComponentMappingsSet = testAccessManagerClient.getApplicationComponentsAccessibleByUser(URL_RESERVED_CHARACTERS);
+            assertEquals(1, userComponentMappingsSet.size());
+            Set<ApplicationComponentAndAccessLevel<ApplicationScreen, AccessLevel>> groupComponentMappingsSet = testAccessManagerClient.getApplicationComponentsAccessibleByGroup(URL_RESERVED_CHARACTERS);
+            assertEquals(1, groupComponentMappingsSet.size());
+            Set<EntityTypeAndEntity> userEntityMappingsSet = testAccessManagerClient.getEntitiesAccessibleByUser(URL_RESERVED_CHARACTERS);
+            assertEquals(1, userEntityMappingsSet.size());
+            Set<String> entitiesSet = testAccessManagerClient.getEntitiesAccessibleByUser(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            assertEquals(1, entitiesSet.size());
+            Set<EntityTypeAndEntity> groupEntityMappingsSet = testAccessManagerClient.getEntitiesAccessibleByGroup(URL_RESERVED_CHARACTERS);
+            assertEquals(1, groupEntityMappingsSet.size());
+            entitiesSet = testAccessManagerClient.getEntitiesAccessibleByGroup(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
+            assertEquals(1, entitiesSet.size());
 
             testAccessManagerClient.removeGroupToEntityMapping(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);
             testAccessManagerClient.removeUserToEntityMapping(URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS, URL_RESERVED_CHARACTERS);

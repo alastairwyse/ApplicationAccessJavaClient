@@ -262,8 +262,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public void addUserToGroupMapping(TUser user, TGroup group) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToGroupMappings/user/%s/group/%s", 
-            encodeUrlComponent(userStringifier.toString(user)), 
-            encodeUrlComponent(groupStringifier.toString(group))
+                encodeUrlComponent(userStringifier.toString(user)), 
+                encodeUrlComponent(groupStringifier.toString(group))
             )
         );
         sendPostRequest(url);
@@ -280,7 +280,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<TGroup> getUserToGroupMappings(TUser user, boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToGroupMappings/user/%s?includeIndirectMappings=%s",
-                userStringifier.toString(user), 
+                encodeUrlComponent(userStringifier.toString(user)), 
                 includeIndirectMappings
             )
         );
@@ -304,7 +304,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<TUser> getGroupToUserMappings(TGroup group, Boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToGroupMappings/group/%s?includeIndirectMappings=%s",
-                groupStringifier.toString(group), 
+                encodeUrlComponent(groupStringifier.toString(group)), 
                 includeIndirectMappings
             )
         );
@@ -364,7 +364,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<TGroup> getGroupToGroupMappings(TGroup group, boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToGroupMappings/group/%s?includeIndirectMappings=%s",
-                groupStringifier.toString(group), 
+                encodeUrlComponent(groupStringifier.toString(group)), 
                 includeIndirectMappings
             )
         );
@@ -388,7 +388,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<TGroup> getGroupToGroupReverseMappings(TGroup group, Boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToGroupReverseMappings/group/%s?includeIndirectMappings=%s",
-                groupStringifier.toString(group), 
+                encodeUrlComponent(groupStringifier.toString(group)), 
                 includeIndirectMappings
             )
         );
@@ -449,7 +449,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getUserToApplicationComponentAndAccessLevelMappings(TUser user) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToApplicationComponentAndAccessLevelMappings/user/%s?includeIndirectMappings=false",
-                userStringifier.toString(user)
+                encodeUrlComponent(userStringifier.toString(user))
             )
         );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndApplicationComponentAndAccessLevel>>(){});
@@ -475,8 +475,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<TUser> getApplicationComponentAndAccessLevelToUserMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToApplicationComponentAndAccessLevelMappings/applicationComponent/%s/accessLevel/%s?includeIndirectMappings=%s",
-                applicationComponentStringifier.toString(applicationComponent), 
-                accessLevelStringifier.toString(accessLevel), 
+                encodeUrlComponent(applicationComponentStringifier.toString(applicationComponent)), 
+                encodeUrlComponent(accessLevelStringifier.toString(accessLevel)), 
                 includeIndirectMappings
             )
         );
@@ -538,7 +538,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getGroupToApplicationComponentAndAccessLevelMappings(TGroup group) throws IOException, InterruptedException {
         
         var url = appendPathToBaseUrl(String.format("groupToApplicationComponentAndAccessLevelMappings/group/%s?includeIndirectMappings=false",
-                groupStringifier.toString(group)
+                encodeUrlComponent(groupStringifier.toString(group))
             )
         );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndApplicationComponentAndAccessLevel>>(){});
@@ -564,8 +564,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<TGroup> getApplicationComponentAndAccessLevelToGroupMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToApplicationComponentAndAccessLevelMappings/applicationComponent/%s/accessLevel/%s?includeIndirectMappings=%s",
-                applicationComponentStringifier.toString(applicationComponent), 
-                accessLevelStringifier.toString(accessLevel), 
+                encodeUrlComponent(applicationComponentStringifier.toString(applicationComponent)), 
+                encodeUrlComponent(accessLevelStringifier.toString(accessLevel)), 
                 includeIndirectMappings
             )
         );
@@ -625,7 +625,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public boolean containsEntityType(String entityType) throws IOException, InterruptedException {
         
         var url = appendPathToBaseUrl(String.format("entityTypes/%s",
-                entityType
+                encodeUrlComponent(entityType)
             )
         );
 
@@ -677,7 +677,10 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     @Override
     public List<String> getEntities(String entityType) throws IOException, InterruptedException {
 
-        var url = appendPathToBaseUrl(String.format("entityTypes/%s/entities", entityType));
+        var url = appendPathToBaseUrl(String.format("entityTypes/%s/entities", 
+                encodeUrlComponent(entityType)
+            )
+        );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.EntityTypeAndEntity>>(){});
         var results = new ArrayList<String>();
         for (var currentRawResult : rawResults) {
@@ -698,8 +701,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public boolean containsEntity(String entityType, String entity) throws IOException, InterruptedException {
         
         var url = appendPathToBaseUrl(String.format("entityTypes/%s/entities/%s",
-                entityType, 
-                entity
+                encodeUrlComponent(entityType), 
+                encodeUrlComponent(entity)
             )
         );
 
@@ -754,7 +757,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<EntityTypeAndEntity> getUserToEntityMappings(TUser user) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToEntityMappings/user/%s?includeIndirectMappings=false",
-                userStringifier.toString(user)
+                encodeUrlComponent(userStringifier.toString(user))
             )
         );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity>>(){});
@@ -780,8 +783,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<String> getUserToEntityMappings(TUser user, String entityType) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToEntityMappings/user/%s/entityType/%s?includeIndirectMappings=false",
-                userStringifier.toString(user), 
-                entityType
+                encodeUrlComponent(userStringifier.toString(user)), 
+                encodeUrlComponent(entityType)
             )
         );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity>>(){});
@@ -804,8 +807,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<TUser> getEntityToUserMappings(String entityType, String entity, Boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToEntityMappings/entityType/%s/entity/%s?includeIndirectMappings=%s",
-                entityType, 
-                entity, 
+                encodeUrlComponent(entityType), 
+                encodeUrlComponent(entity), 
                 includeIndirectMappings
             )
         );
@@ -867,7 +870,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<EntityTypeAndEntity> getGroupToEntityMappings(TGroup group) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToEntityMappings/group/%s?includeIndirectMappings=false",
-                groupStringifier.toString(group)
+                encodeUrlComponent(groupStringifier.toString(group))
             )
         );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity>>(){});
@@ -893,8 +896,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<String> getGroupToEntityMappings(TGroup group, String entityType) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToEntityMappings/group/%s/entityType/%s?includeIndirectMappings=false",
-                groupStringifier.toString(group), 
-                entityType
+                encodeUrlComponent(groupStringifier.toString(group)), 
+                encodeUrlComponent(entityType)
             )
         );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity>>(){});
@@ -917,8 +920,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public List<TGroup> getEntityToGroupMappings(String entityType, String entity, Boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToEntityMappings/entityType/%s/entity/%s?includeIndirectMappings=%s",
-                entityType, 
-                entity, 
+                encodeUrlComponent(entityType), 
+                encodeUrlComponent(entity), 
                 includeIndirectMappings
             )
         );
@@ -961,9 +964,9 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public boolean hasAccessToApplicationComponent(TUser user, TComponent applicationComponent, TAccess accessLevel) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("dataElementAccess/applicationComponent/user/%s/applicationComponent/%s/accessLevel/%s",
-                userStringifier.toString(user), 
-                applicationComponentStringifier.toString(applicationComponent), 
-                accessLevelStringifier.toString(accessLevel)
+                encodeUrlComponent(userStringifier.toString(user)), 
+                encodeUrlComponent(applicationComponentStringifier.toString(applicationComponent)), 
+                encodeUrlComponent(accessLevelStringifier.toString(accessLevel))
             )
         );
         Boolean result = sendGetRequest(url, new TypeReference<Boolean>(){});
@@ -982,9 +985,9 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public boolean hasAccessToEntity(TUser user, String entityType, String entity) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("dataElementAccess/entity/user/%s/entityType/%s/entity/%s",
-                userStringifier.toString(user), 
-                entityType, 
-                entity
+                encodeUrlComponent(userStringifier.toString(user)), 
+                encodeUrlComponent(entityType), 
+                encodeUrlComponent(entity)
             )
         );
         Boolean result = sendGetRequest(url, new TypeReference<Boolean>(){});
@@ -1003,7 +1006,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public Set<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getApplicationComponentsAccessibleByUser(TUser user) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToApplicationComponentAndAccessLevelMappings/user/%s?includeIndirectMappings=true",
-                userStringifier.toString(user)
+                encodeUrlComponent(userStringifier.toString(user))
             )
         );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndApplicationComponentAndAccessLevel>>(){});
@@ -1029,7 +1032,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public Set<ApplicationComponentAndAccessLevel<TComponent, TAccess>> getApplicationComponentsAccessibleByGroup(TGroup group) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToApplicationComponentAndAccessLevelMappings/group/%s?includeIndirectMappings=true",
-                groupStringifier.toString(group)
+                encodeUrlComponent(groupStringifier.toString(group))
             )
         );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndApplicationComponentAndAccessLevel> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndApplicationComponentAndAccessLevel>>(){});
@@ -1055,7 +1058,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public Set<EntityTypeAndEntity> getEntitiesAccessibleByUser(TUser user) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToEntityMappings/user/%s?includeIndirectMappings=true",
-                userStringifier.toString(user)
+                encodeUrlComponent(userStringifier.toString(user))
             )
         );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity>>(){});
@@ -1081,8 +1084,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public Set<String> getEntitiesAccessibleByUser(TUser user, String entityType) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToEntityMappings/user/%s/entityType/%s?includeIndirectMappings=true",
-                userStringifier.toString(user), 
-                entityType
+                encodeUrlComponent(userStringifier.toString(user)), 
+                encodeUrlComponent(entityType)
             )
         );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.UserAndEntity>>(){});
@@ -1105,7 +1108,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public Set<EntityTypeAndEntity> getEntitiesAccessibleByGroup(TGroup group) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToEntityMappings/group/%s?includeIndirectMappings=true",
-                groupStringifier.toString(group)
+                encodeUrlComponent(groupStringifier.toString(group))
             )
         );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity>>(){});
@@ -1131,8 +1134,8 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
     public Set<String> getEntitiesAccessibleByGroup(TGroup group, String entityType) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToEntityMappings/group/%s/entityType/%s?includeIndirectMappings=true",
-                groupStringifier.toString(group), 
-                entityType
+                encodeUrlComponent(groupStringifier.toString(group)),  
+                encodeUrlComponent(entityType)
             )
         );
         ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity> rawResults = sendGetRequest(url, new TypeReference<ArrayList<net.alastairwyse.applicationaccessclient.models.datatransferobjects.GroupAndEntity>>(){});
