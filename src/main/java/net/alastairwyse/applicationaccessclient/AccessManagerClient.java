@@ -96,7 +96,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -116,7 +116,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -136,7 +136,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -151,7 +151,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -168,7 +168,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -186,7 +186,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -203,7 +203,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -220,7 +220,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -238,7 +238,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -255,7 +255,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -273,7 +273,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -297,7 +297,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -321,7 +321,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -339,7 +339,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -357,7 +357,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -381,7 +381,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -405,7 +405,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -423,7 +423,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -442,7 +442,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -468,7 +468,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -493,7 +493,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -512,7 +512,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -531,7 +531,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -557,7 +557,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -582,7 +582,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -601,7 +601,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -618,7 +618,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -636,7 +636,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -653,7 +653,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -671,7 +671,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -694,7 +694,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -713,7 +713,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -731,7 +731,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -750,7 +750,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -776,7 +776,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -800,7 +800,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -825,7 +825,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -844,7 +844,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -863,7 +863,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -889,7 +889,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -913,7 +913,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -938,7 +938,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -957,7 +957,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -978,7 +978,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -999,7 +999,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -1025,7 +1025,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -1051,7 +1051,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -1077,7 +1077,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -1101,7 +1101,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
@@ -1127,7 +1127,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @inheritDoc
      * @exception RuntimeException If a non-success response status was received.
      * @exception RuntimeException If the response could not be deserialized to an object.
-     * @exception IOException If an I/O error occurs when sending or receiving, or the client has ##closing shut down.
+     * @exception IOException If an I/O error occurs when sending or receiving, or the client has shut down.
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
