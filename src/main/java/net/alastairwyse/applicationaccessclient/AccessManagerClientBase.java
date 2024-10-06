@@ -458,7 +458,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         return "";
     }
 
-    ////#endregion
+    //#endregion
 
     //#region Close Method
 
@@ -469,7 +469,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         }
     }
 
-    ////#endregion
+    //#endregion
 
     //#region Nested Classes
 
@@ -532,5 +532,5 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
         }
     }
 
-    ////#endregion
+    //#endregion
 }
