@@ -12,6 +12,15 @@ public class AccessManagerStringElementClient extends AccessManagerClient<String
     /**
      * Constructs an AccessManagerStringElementClient.
      * 
+     * @param baseUrl The base URL for the hosted Web API.
+     */
+    public AccessManagerStringElementClient(URI baseUrl) {
+        super(baseUrl, new StringUniqueStringifier(), new StringUniqueStringifier(), new StringUniqueStringifier(), new StringUniqueStringifier());
+    }
+
+    /**
+     * Constructs an AccessManagerStringElementClient.
+     * 
      * @param httpClient The client to use to connect.
      * @param baseUrl The base URL for the hosted Web API.
      */
