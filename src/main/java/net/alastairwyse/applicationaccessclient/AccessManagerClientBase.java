@@ -83,7 +83,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
      * @param baseUrl The base URL for the hosted Web API.
      * @param userStringifier A string converter for users.  Used to convert strings sent to and received from the web API from/to TUser instances.
      * @param groupStringifier A string converter for groups.  Used to convert strings sent to and received from the web API from/to TGroup instances.
-     * @param applicationComponentStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param applicationComponentStringifier A string converter for application components.  Used to convert strings sent to and received from the web API from/to TComponent instances.
      * @param accessLevelStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
      */
     public AccessManagerClientBase(
@@ -105,7 +105,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
      * @param baseUrl The base URL for the hosted Web API.
      * @param userStringifier A string converter for users.  Used to convert strings sent to and received from the web API from/to TUser instances.
      * @param groupStringifier A string converter for groups.  Used to convert strings sent to and received from the web API from/to TGroup instances.
-     * @param applicationComponentStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param applicationComponentStringifier A string converter for application components.  Used to convert strings sent to and received from the web API from/to TComponent instances.
      * @param accessLevelStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
      */
     public AccessManagerClientBase(
@@ -128,7 +128,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
      * @param baseUrl The base URL for the hosted Web API.
      * @param userStringifier A string converter for users.  Used to convert strings sent to and received from the web API from/to TUser instances.
      * @param groupStringifier A string converter for groups.  Used to convert strings sent to and received from the web API from/to TGroup instances.
-     * @param applicationComponentStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param applicationComponentStringifier A string converter for application components.  Used to convert strings sent to and received from the web API from/to TComponent instances.
      * @param accessLevelStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
      * @param requestHeaders HTTP headers to send with each request.
      */
@@ -253,7 +253,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
      * @param baseUrl The base URL for the hosted Web API.
      * @param userStringifier A string converter for users.  Used to convert strings sent to and received from the web API from/to TUser instances.
      * @param groupStringifier A string converter for groups.  Used to convert strings sent to and received from the web API from/to TGroup instances.
-     * @param applicationComponentStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
+     * @param applicationComponentStringifier A string converter for application components.  Used to convert strings sent to and received from the web API from/to TComponent instances.
      * @param accessLevelStringifier A string converter for access levels.  Used to convert strings sent to and received from the web API from/to TAccess instances.
      */
     protected void setBaseConstructorParameters (
