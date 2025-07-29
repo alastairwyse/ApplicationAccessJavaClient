@@ -74,10 +74,10 @@ public interface AccessManagerQueryProcessor<TUser, TGroup, TComponent, TAccess>
      * Gets the users that are mapped to the specified group.
      * 
      * @param group The group to retrieve the users for.
-     * @param includeIndirectMappings >Whether to include indirect mappings (i.e. those where a user is mapped to the group via other groups).
+     * @param includeIndirectMappings Whether to include indirect mappings (i.e. those where a user is mapped to the group via other groups).
      * @return A collection of users that are mapped to the specified group.
      */
-    public List<TUser> getGroupToUserMappings(TGroup group, Boolean includeIndirectMappings) throws Exception;
+    public List<TUser> getGroupToUserMappings(TGroup group, boolean includeIndirectMappings) throws Exception;
 
     /**
      * Gets the groups that the specified group is mapped to.
@@ -95,7 +95,7 @@ public interface AccessManagerQueryProcessor<TUser, TGroup, TComponent, TAccess>
      * @param includeIndirectMappings Whether to include indirect mappings (i.e. those where the 'mapped from' group is itself mapped from further groups).
      * @return A collection of groups that are mapped to the specified group.
      */
-    public List<TGroup> getGroupToGroupReverseMappings(TGroup group, Boolean includeIndirectMappings) throws Exception;
+    public List<TGroup> getGroupToGroupReverseMappings(TGroup group, boolean includeIndirectMappings) throws Exception;
 
     /**
      * Gets the application component and access level pairs that the specified user is mapped to.
@@ -113,7 +113,7 @@ public interface AccessManagerQueryProcessor<TUser, TGroup, TComponent, TAccess>
      * @param includeIndirectMappings Whether to include indirect mappings (i.e. those where a user is mapped to an application component and access level via groups).
      * @return A collection of users that are mapped to the specified application component and access level.
      */
-    public List<TUser> getApplicationComponentAndAccessLevelToUserMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) throws Exception;
+    public List<TUser> getApplicationComponentAndAccessLevelToUserMappings(TComponent applicationComponent, TAccess accessLevel, boolean includeIndirectMappings) throws Exception;
 
     /**
      * Gets the application component and access level pairs that the specified group is mapped to.
@@ -131,7 +131,7 @@ public interface AccessManagerQueryProcessor<TUser, TGroup, TComponent, TAccess>
      * @param includeIndirectMappings Whether to include indirect mappings (i.e. those where a group is mapped to an application component and access level via other groups).
      * @return A collection of groups that are mapped to the specified application component and access level.
      */
-    public List<TGroup> getApplicationComponentAndAccessLevelToGroupMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) throws Exception;
+    public List<TGroup> getApplicationComponentAndAccessLevelToGroupMappings(TComponent applicationComponent, TAccess accessLevel, boolean includeIndirectMappings) throws Exception;
 
     /**
      * Returns true if the specified entity type exists.
@@ -183,7 +183,7 @@ public interface AccessManagerQueryProcessor<TUser, TGroup, TComponent, TAccess>
      * @param includeIndirectMappings Whether to include indirect mappings (i.e. those where a user is mapped to the entity via groups).
      * @return A collection of users that are mapped to the specified entity.
      */
-    public List<TUser> getEntityToUserMappings(String entityType, String entity, Boolean includeIndirectMappings) throws Exception;
+    public List<TUser> getEntityToUserMappings(String entityType, String entity, boolean includeIndirectMappings) throws Exception;
 
     /**
      * Gets the entities that the specified group is mapped to.
@@ -210,7 +210,7 @@ public interface AccessManagerQueryProcessor<TUser, TGroup, TComponent, TAccess>
      * @param includeIndirectMappings Whether to include indirect mappings (i.e. those where a group is mapped to the entity via other groups).
      * @return A collection of groups that are mapped to the specified entity.
      */
-    public List<TGroup> getEntityToGroupMappings(String entityType, String entity, Boolean includeIndirectMappings) throws Exception;
+    public List<TGroup> getEntityToGroupMappings(String entityType, String entity, boolean includeIndirectMappings) throws Exception;
     
     /**
      * Checks whether the specified user (or a group that the user is a member of) has access to an application component at the specified level of access.

@@ -321,7 +321,7 @@ public abstract class AccessManagerClientBase<TUser, TGroup, TComponent, TAccess
     /**
      * Encodes the specified string for use in a URL.
      * 
-     * @param elementValue The string to encode.
+     * @param component The string to encode.
      * @return The encoded string.
      */
     protected String encodeUrlComponent(String component) {

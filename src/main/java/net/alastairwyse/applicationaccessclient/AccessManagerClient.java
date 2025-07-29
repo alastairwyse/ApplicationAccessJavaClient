@@ -317,7 +317,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
-    public List<TUser> getGroupToUserMappings(TGroup group, Boolean includeIndirectMappings) throws IOException, InterruptedException {
+    public List<TUser> getGroupToUserMappings(TGroup group, boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToGroupMappings/group/%s?includeIndirectMappings=%s",
                 encodeUrlComponent(groupStringifier.toString(group)), 
@@ -401,7 +401,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
-    public List<TGroup> getGroupToGroupReverseMappings(TGroup group, Boolean includeIndirectMappings) throws IOException, InterruptedException {
+    public List<TGroup> getGroupToGroupReverseMappings(TGroup group, boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToGroupReverseMappings/group/%s?includeIndirectMappings=%s",
                 encodeUrlComponent(groupStringifier.toString(group)), 
@@ -488,7 +488,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
-    public List<TUser> getApplicationComponentAndAccessLevelToUserMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) throws IOException, InterruptedException {
+    public List<TUser> getApplicationComponentAndAccessLevelToUserMappings(TComponent applicationComponent, TAccess accessLevel, boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToApplicationComponentAndAccessLevelMappings/applicationComponent/%s/accessLevel/%s?includeIndirectMappings=%s",
                 encodeUrlComponent(applicationComponentStringifier.toString(applicationComponent)), 
@@ -577,7 +577,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
-    public List<TGroup> getApplicationComponentAndAccessLevelToGroupMappings(TComponent applicationComponent, TAccess accessLevel, Boolean includeIndirectMappings) throws IOException, InterruptedException {
+    public List<TGroup> getApplicationComponentAndAccessLevelToGroupMappings(TComponent applicationComponent, TAccess accessLevel, boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToApplicationComponentAndAccessLevelMappings/applicationComponent/%s/accessLevel/%s?includeIndirectMappings=%s",
                 encodeUrlComponent(applicationComponentStringifier.toString(applicationComponent)), 
@@ -820,7 +820,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
-    public List<TUser> getEntityToUserMappings(String entityType, String entity, Boolean includeIndirectMappings) throws IOException, InterruptedException {
+    public List<TUser> getEntityToUserMappings(String entityType, String entity, boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("userToEntityMappings/entityType/%s/entity/%s?includeIndirectMappings=%s",
                 encodeUrlComponent(entityType), 
@@ -933,7 +933,7 @@ public class AccessManagerClient<TUser, TGroup, TComponent, TAccess>
      * @exception InterruptedException If the operation is interrupted.
      */
     @Override
-    public List<TGroup> getEntityToGroupMappings(String entityType, String entity, Boolean includeIndirectMappings) throws IOException, InterruptedException {
+    public List<TGroup> getEntityToGroupMappings(String entityType, String entity, boolean includeIndirectMappings) throws IOException, InterruptedException {
 
         var url = appendPathToBaseUrl(String.format("groupToEntityMappings/entityType/%s/entity/%s?includeIndirectMappings=%s",
                 encodeUrlComponent(entityType), 
