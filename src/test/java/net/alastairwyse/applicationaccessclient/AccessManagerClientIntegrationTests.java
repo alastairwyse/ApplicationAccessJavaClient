@@ -556,8 +556,8 @@ public class AccessManagerClientIntegrationTests {
             assertTrue(groupToGroupMappings.contains("group4"));
             assertTrue(groupToGroupMappings.contains("group5"));
             assertTrue(groupToGroupMappings.contains("group6"));
-            groupToUserMappings = testAccessManagerClient.getGroupToGroupMappings("orphanedGroup", false);
-            assertEquals(0, groupToUserMappings.size());
+            groupToGroupMappings = testAccessManagerClient.getGroupToGroupMappings("orphanedGroup", false);
+            assertEquals(0, groupToGroupMappings.size());
 
             List<String> groupToGroupReverseMappings = testAccessManagerClient.getGroupToGroupReverseMappings("group6", false);
             assertEquals(1, groupToGroupReverseMappings.size());
@@ -568,7 +568,7 @@ public class AccessManagerClientIntegrationTests {
             assertTrue(groupToGroupReverseMappings.contains("group2"));
             assertTrue(groupToGroupReverseMappings.contains("group4"));
             groupToGroupReverseMappings = testAccessManagerClient.getGroupToGroupReverseMappings("orphanedGroup", false);
-            assertEquals(0, groupToUserMappings.size());
+            assertEquals(0, groupToGroupReverseMappings.size());
 
             List<ApplicationComponentAndAccessLevel<ApplicationScreen, AccessLevel>> userComponentMappings = testAccessManagerClient.getUserToApplicationComponentAndAccessLevelMappings("user5");
             assertEquals(1, userComponentMappings.size());
